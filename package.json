@@ -1,0 +1,45 @@
+{
+  "name": "@jamiekinney/tmo-validation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf coverage .vitest",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:property": "vitest run test/property",
+    "test:fuzz": "vitest run test/property --reporter=verbose",
+    "test:ci": "vitest run --coverage",
+    "ci": "npm run typecheck && npm run test:ci",
+    "release:build": "./scripts/build-release.sh",
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "npm run clean:package && npm run build",
+    "clean:package": "rm -rf dist-lib",
+    "publish:dry-run": "npm pack --dry-run",
+    "provenance:dependencies": "npm audit signatures",
+    "provenance:published": "./scripts/verify-provenance.sh"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@vitest/coverage-v8": "latest",
+    "fast-check": "latest",
+    "typescript": "latest",
+    "vitest": "latest"
+  },
+  "version": "1.0.0",
+  "description": "TMO validation primitives and property-tested invariants",
+  "license": "SEE LICENSE IN LICENSE",
+  "files": [
+    "dist-lib"
+  ],
+  "types": "./dist-lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist-lib/index.d.ts",
+      "import": "./dist-lib/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
