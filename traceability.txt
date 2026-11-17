@@ -1,0 +1,94 @@
+test_QA_001_hypothesis_determinism: REQ-NUM-01
+test_QA_002_hypothesis_convex_hull: REQ-NUM-02, REQ-NUM-03
+test_QA_003_hypothesis_range: REQ-NUM-02, REQ-VAL-02
+test_QA_004_hypothesis_zero_learning: REQ-NUM-04, REQ-PRV-05
+test_QA_005_hypothesis_zero_resolution: REQ-NUM-04, REQ-PRV-04, REQ-PRV-05
+test_QA_006_hypothesis_matching_observation: REQ-NUM-04, REQ-PRV-05
+test_QA_007_hypothesis_full_weight: REQ-NUM-04, REQ-NUM-03
+test_QA_008_hypothesis_direction: REQ-NUM-03, REQ-NUM-02
+test_QA_009_hypothesis_delta: REQ-NUM-03, REQ-RPL-01
+test_QA_010_hypothesis_weight_monotonicity: REQ-NUM-03, REQ-NUM-05
+test_QA_011_hypothesis_effective_weight_equivalence: REQ-NUM-05, REQ-PRV-04
+test_QA_012_hypothesis_full_replay: REQ-RPL-01, REQ-RPL-02
+test_QA_014_hypothesis_prefix_replay: REQ-RPL-03, REQ-DIA-01
+test_QA_018_hypothesis_lineage: REQ-LIN-01, REQ-LIN-02
+test_QA_024_hypothesis_observation_tamper: REQ-TAM-01, REQ-DIA-01
+test_QA_025_hypothesis_learning_rate_tamper: REQ-TAM-01, REQ-PRV-04
+test_QA_026_hypothesis_resolution_tamper: REQ-TAM-01, REQ-PRV-04
+test_QA_037_hypothesis_neutral_event: REQ-PRV-05, REQ-NUM-05
+test_QA_050_hypothesis_shrinking_enabled: REQ-DIA-02, REQ-DIA-01
+test_QA_051_hypothesis_derandomized_replay: REQ-DIA-02, REQ-NUM-01
+test_QA_001_deterministic_transition: REQ-NUM-01
+test_QA_002_convex_hull: REQ-NUM-02, REQ-NUM-03
+test_QA_003_range_preservation: REQ-NUM-02, REQ-VAL-02
+test_QA_004_zero_learning: REQ-NUM-04, REQ-PRV-05
+test_QA_005_zero_resolution: REQ-NUM-04, REQ-PRV-04, REQ-PRV-05
+test_QA_006_matching_observation: REQ-NUM-04, REQ-PRV-05
+test_QA_007_full_weight: REQ-NUM-04, REQ-NUM-03
+test_QA_008_direction: REQ-NUM-03, REQ-NUM-02
+test_QA_009_delta: REQ-NUM-03, REQ-RPL-01
+test_QA_010_weight_monotonicity: REQ-NUM-03, REQ-NUM-05
+test_QA_011_effective_weight_equivalence: REQ-NUM-05, REQ-PRV-04
+test_QA_012_exact_history_replay: REQ-RPL-01, REQ-RPL-02
+test_QA_013_terminal_replay: REQ-RPL-02, REQ-RPL-01
+test_QA_014_prefix_replay: REQ-RPL-03, REQ-DIA-01
+test_QA_015_replay_idempotence: REQ-RPL-04, REQ-PRV-03
+test_QA_016_serialization_roundtrip: REQ-RPL-05, REQ-PRV-01
+test_QA_017_checkpoint_equivalence: REQ-RPL-06, REQ-RPL-01
+test_QA_018_parent_child_continuity: REQ-LIN-01, REQ-LIN-02
+test_QA_019_state_continuity: REQ-LIN-02, REQ-RPL-01
+test_QA_020_duplicate_event_rejected: REQ-LIN-03, REQ-LIN-04
+test_QA_021_missing_event_detected: REQ-LIN-04, REQ-DIA-01
+test_QA_022_reordering_detected: REQ-LIN-04, REQ-LIN-01
+test_QA_023_independent_edges_template: REQ-LIN-05, REQ-RPL-01
+test_QA_024_to_030_committed_field_tampering: 
+test_QA_031_chain_propagation: REQ-TAM-03, REQ-TAM-02
+test_QA_032_required_field_completeness: REQ-PRV-01, REQ-VAL-01
+test_QA_033_runtime_defaults_irrelevant: REQ-PRV-02, REQ-RPL-01
+test_QA_034_live_state_independence: REQ-PRV-03, REQ-RPL-04
+test_QA_035_certainty_resolution_separation: REQ-PRV-04, REQ-NUM-05
+test_QA_036_zero_delta_retained: REQ-PRV-05, REQ-NUM-04
+test_QA_037_neutral_event_insertion: REQ-PRV-05, REQ-NUM-05
+test_QA_038_full_adoption_checkpoint: REQ-NUM-04, REQ-RPL-06
+test_QA_039_parameter_decomposition: REQ-NUM-05, REQ-PRV-04, REQ-TAM-02
+test_QA_040_independent_edge_permutation_template: REQ-LIN-05, REQ-RPL-01
+test_QA_041_verified_checkpoint: REQ-RPL-06, REQ-RPL-02
+test_QA_071_closed_cycle_composes_to_origin: REQ-TMO-17, REQ-TMO-10
+test_QA_072_cycle_preserves_quality_shared_by_all_edges: REQ-TMO-18, REQ-TMO-05
+test_QA_073_cycle_loses_quality_missing_from_one_edge: REQ-TMO-19, REQ-NUM-05
+test_QA_074_cycle_retains_common_core_reference: REQ-TMO-20, REQ-TMO-05
+test_QA_075_open_path_rejected_as_cycle: REQ-TMO-21, REQ-VAL-01
+test_QA_076_broken_cycle_rejected: REQ-TMO-21, REQ-TMO-11
+test_QA_077_cycle_rotation_preserves_shared_quality: REQ-TMO-22, REQ-TMO-10
+test_QA_078_two_cycles_can_share_cycle_invariant: REQ-TMO-23, REQ-TMO-13
+test_QA_079_hypothesis_cycle_equals_global_intersection: REQ-TMO-18, REQ-TMO-16
+test_QA_080_hypothesis_cycle_start_point_invariance: REQ-TMO-22, REQ-TMO-18
+test_QA_061_multi_profile_graph_accepts_shared_core: REQ-TMO-09, REQ-LIN-05
+test_QA_062_two_edge_composition_preserves_shared_quality: REQ-TMO-10, REQ-TMO-04
+test_QA_063_composition_maps_shared_quality_to_invariant: REQ-TMO-10, REQ-TMO-05
+test_QA_064_nonincident_edges_cannot_compose: REQ-TMO-11, REQ-VAL-01
+test_QA_065_disjoint_path_qualities_collapse: REQ-TMO-12, REQ-NUM-05
+test_QA_066_parallel_paths_can_share_composed_invariant: REQ-TMO-13, REQ-TMO-06
+test_QA_067_graph_rejects_missing_endpoint: REQ-TMO-14, REQ-LIN-04
+test_QA_068_graph_path_resolution: REQ-TMO-15, REQ-TMO-04
+test_QA_069_hypothesis_composition_equals_quality_intersection: REQ-TMO-10
+test_QA_070_hypothesis_three_edge_associativity_of_quality_core: REQ-TMO-16, REQ-TMO-10
+test_QA_052_profile_layers_core: REQ-TMO-01
+test_QA_053_relation_connects_profiles: REQ-TMO-02, REQ-LIN-05
+test_QA_054_edge_holds_qualities: REQ-TMO-03, REQ-PRV-04
+test_QA_055_intersection_associates_invariant: REQ-TMO-04, REQ-TMO-05
+test_QA_056_different_profiles_same_relational_invariant: REQ-TMO-06, REQ-NUM-05
+test_QA_057_profile_reference_outside_core_rejected: REQ-TMO-07, REQ-VAL-01
+test_QA_058_edge_reference_outside_core_rejected: REQ-TMO-08, REQ-VAL-01
+test_QA_059_quality_intersection_symmetric: REQ-TMO-04
+test_QA_060_disjoint_qualities_no_association: REQ-TMO-05, REQ-NUM-05
+test_QA_042_out_of_range: REQ-VAL-01, REQ-VAL-02
+test_QA_043_non_finite: REQ-VAL-02, REQ-NUM-02
+test_QA_044_missing_event_id: REQ-PRV-01, REQ-VAL-01
+test_QA_045_missing_parent: REQ-LIN-04, REQ-PRV-01
+test_QA_046_duplicate_version: REQ-LIN-04, REQ-VAL-01
+test_QA_047_unsupported_operator: REQ-VER-02, REQ-VER-01
+test_QA_048_malformed_digest: REQ-TAM-02, REQ-VAL-01
+test_QA_049_wrong_edge_pre_state: REQ-LIN-02, REQ-LIN-04
+test_QA_050_shrinking_template: REQ-DIA-02, REQ-DIA-01
+test_QA_051_seed_reproducibility: REQ-DIA-02, REQ-NUM-01
