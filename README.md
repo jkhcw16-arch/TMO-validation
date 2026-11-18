@@ -1,61 +1,71 @@
-# TMO validation
+# PTM Prime Lattice
 
-TypeScript validation implementation with Vitest and fast-check property tests.
+Reference implementation of the invertible prime-lattice model developed for Pairwise Temporal Memory (PTM).
 
-## Local commands
+## Model
+A lattice state is `e in Z^n`; distinct primes provide a reversible serialization:
 
-```bash
-npm install
-npm run typecheck
-npm test
-npm run test:property
-npm run test:fuzz
-npm run test:ci
+`Phi(e) = product(p_i ** e_i)`
+
+A transition is:
+
+`e[t+1] = R_n^k e[t] + d[t]`
+
+where `R_n` is cyclic left rotation, `k mod n` is orientation, and `d` is an integer edge/role displacement. The inverse is:
+
+`e[t] = R_n^(-k) (e[t+1] - d[t])`
+
+The full transition structure is `Z^n semidirect-product C_n`.
+
+## Quick start
+```python
+from ptm_lattice import PrimeLattice, Transition
+
+L = PrimeLattice([2, 3, 7, 11, 13])
+e0 = (1, 2, 0, -1, 3)
+t = Transition(k=1, d=(0, 1, 0, 0, 0))
+e1 = L.apply(e0, t)
+assert L.invert(e1, t) == e0
+assert L.decode(L.encode(e0)) == e0
 ```
 
-For CI-equivalent execution after a lock file exists:
+## Test
+`python -m unittest discover -s tests -v`
 
-```bash
-./scripts/ci.sh
-```
+## Ownership
+Copyright 2026 Jamie Kinney, Ephrata, Washington. Licensed under AGPL-3.0-only.
 
-## CI
+## Verify a signed release
 
-`.github/workflows/ci.yml` runs type checking and tests across the configured Node.js matrix, then produces a V8 coverage report and uploads the `coverage/` directory as a workflow artifact.
+A release signature is valid only when the signing public key has been independently confirmed as belonging to the expected release signer.
 
-Source is under `src/validation/`; property tests and fast-check arbitraries are under `test/property/`.
+1. Obtain these release files:
+   - `ptm-prime-lattice.zip`
+   - `ptm-prime-lattice.zip.sha256`
+   - `RELEASE-MANIFEST.txt`
+   - `RELEASE-MANIFEST.txt.asc`
+   - the trusted public signing key
 
-## npm publishing
+2. Import the trusted public key if it is not already in your GPG keyring:
 
-The release workflow also publishes the package to the public npm registry after release verification.
+   `gpg --import RELEASE-SIGNING-KEY.asc`
 
-Before enabling publishing:
+3. Inspect and independently compare the key fingerprint with the fingerprint published by the project owner through a trusted channel:
 
-1. Replace `@jamiekinney/tmo-validation` in `package.json` with the intended npm package name.
-2. Set `package.json` `version` to the semantic version represented by the release tag.
-3. On npm, configure this repository's `.github/workflows/release.yml` as a trusted publisher.
+   `gpg --fingerprint YOUR_KEY_FINGERPRINT`
 
-Stable release tags publish with the `latest` npm dist-tag. Hyphenated prerelease versions publish with the `next` dist-tag.
+4. Verify the detached signature. The signature file is the first argument and the signed manifest is the second:
 
-Inspect package contents without publishing:
+   `gpg --verify RELEASE-MANIFEST.txt.asc RELEASE-MANIFEST.txt`
 
-```bash
-npm run publish:dry-run
-```
+   Continue only if GPG reports a good signature from the expected key and the displayed fingerprint matches the independently trusted fingerprint.
 
-## Provenance verification
+5. Verify the archive checksum:
 
-The release workflow verifies npm registry signatures/provenance with `npm audit signatures` and then checks that the newly published package version exposes an npm provenance/SLSA attestation.
+   `sha256sum -c ptm-prime-lattice.zip.sha256`
 
-Local checks:
+6. Compare the SHA-256 recorded inside `RELEASE-MANIFEST.txt` with the checksum of the downloaded archive:
 
-```bash
-npm run provenance:dependencies
-npm run provenance:published -- @jamiekinney/tmo-validation 1.0.0
-```
+   `sha256sum ptm-prime-lattice.zip`
 
-Trusted Publishing must be configured for `.github/workflows/release.yml` on npm before the publish job can use OIDC.
-
-## License
-
-Copyright (c) 2026 Jamie Kinney. All rights reserved. This project is proprietary. See `LICENSE`.
+A valid signature authenticates the signed manifest. The checksum binds the archive to the hash recorded for the release. Do not treat an unverified key identity or a checksum alone as proof of signer identity.
