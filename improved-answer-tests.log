@@ -1,0 +1,31 @@
+test_abstention (test_answer_generation.AnsweringTests.test_abstention) ... ok
+test_custom_reader_interface (test_answer_generation.AnsweringTests.test_custom_reader_interface) ... ok
+test_grounded_extractive_answer (test_answer_generation.AnsweringTests.test_grounded_extractive_answer) ... ok
+test_latest_knowledge_preferred (test_answer_generation.AnsweringTests.test_latest_knowledge_preferred) ... ok
+test_longmemeval_contract (test_answer_generation.AnsweringTests.test_longmemeval_contract) ... ok
+test_multisession_evidence_capsule (test_answer_generation.AnsweringTests.test_multisession_evidence_capsule) ... ok
+test_10000_random_decisions_match_oracle (test_assurance_tracks.GovernanceTests.test_10000_random_decisions_match_oracle) ... ok
+test_allow (test_assurance_tracks.GovernanceTests.test_allow) ... ok
+test_each_nonpassing_test (test_assurance_tracks.GovernanceTests.test_each_nonpassing_test) ... ok
+test_each_required_gate (test_assurance_tracks.GovernanceTests.test_each_required_gate) ... ok
+test_risk_recovery_quarantine (test_assurance_tracks.GovernanceTests.test_risk_recovery_quarantine) ... ok
+test_boundaries_and_rejections (test_assurance_tracks.TemporalIntegrityTests.test_boundaries_and_rejections) ... ok
+test_random_bitemporal_oracle (test_assurance_tracks.TemporalIntegrityTests.test_random_bitemporal_oracle) ... ok
+test_valid_and_transaction_time (test_assurance_tracks.TemporalIntegrityTests.test_valid_and_transaction_time) ... ok
+test_determinism (test_benchmark_retrieval.RetrievalTests.test_determinism) ... ok
+test_lexical_ranking_and_abstention (test_benchmark_retrieval.RetrievalTests.test_lexical_ranking_and_abstention) ... ok
+test_locomo_adapter_and_recall (test_benchmark_retrieval.RetrievalTests.test_locomo_adapter_and_recall) ... ok
+test_longmemeval_adapter_and_recall (test_benchmark_retrieval.RetrievalTests.test_longmemeval_adapter_and_recall) ... ok
+test_longmemeval_validation (test_benchmark_retrieval.RetrievalTests.test_longmemeval_validation) ... ok
+test_temporal_filter (test_benchmark_retrieval.RetrievalTests.test_temporal_filter) ... ok
+test_10000_round_trips_and_reconstruction (test_transition_vector.TransitionVectorTests.test_10000_round_trips_and_reconstruction) ... ok
+test_composition (test_transition_vector.TransitionVectorTests.test_composition) ... ok
+test_identity_and_sparse (test_transition_vector.TransitionVectorTests.test_identity_and_sparse) ... ok
+test_invalid_inputs (test_transition_vector.TransitionVectorTests.test_invalid_inputs) ... ok
+test_large_integer_round_trip (test_transition_vector.TransitionVectorTests.test_large_integer_round_trip) ... ok
+test_ontology_schema (test_transition_vector.TransitionVectorTests.test_ontology_schema) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 4.534s
+
+OK
