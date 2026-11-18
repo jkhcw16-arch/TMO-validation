@@ -1,0 +1,94 @@
+{
+  "dataset": "LongMemEval cleaned oracle",
+  "input_sha256": "821a2034d219ab45846873dd14c14f12cfe7776e73527a483f9dac095d38620c",
+  "instances": 500,
+  "top_k": 5,
+  "elapsed_seconds": 7,
+  "metrics_note": "Local transparent lexical metrics. Not LongMemEval semantic autoeval.",
+  "overall": {
+    "n": 500,
+    "em": 0.0,
+    "f1": 0.029866549327200072,
+    "containment": 0.376,
+    "r1": 0.6442333333333333,
+    "r3": 0.9481666666666666,
+    "r5": 0.9519,
+    "abstention_correct": 0.94,
+    "abstained": 0,
+    "gold_abstention": 30
+  },
+  "by_question_type": {
+    "knowledge-update": {
+      "n": 78,
+      "em": 0.0,
+      "f1": 0.020417045962591432,
+      "containment": 0.6410256410256411,
+      "r1": 0.5,
+      "r3": 0.9871794871794872,
+      "r5": 0.9871794871794872,
+      "abstention_correct": 0.9230769230769231,
+      "abstained": 0,
+      "gold_abstention": 6
+    },
+    "multi-session": {
+      "n": 133,
+      "em": 0.0,
+      "f1": 0.007442970378547861,
+      "containment": 0.22556390977443608,
+      "r1": 0.4219298245614035,
+      "r3": 0.887719298245614,
+      "r5": 0.8989974937343358,
+      "abstention_correct": 0.9097744360902256,
+      "abstained": 0,
+      "gold_abstention": 12
+    },
+    "single-session-assistant": {
+      "n": 56,
+      "em": 0.0,
+      "f1": 0.0511563165922252,
+      "containment": 0.42857142857142855,
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "abstention_correct": 1.0,
+      "abstained": 0,
+      "gold_abstention": 0
+    },
+    "single-session-preference": {
+      "n": 30,
+      "em": 0.0,
+      "f1": 0.14053961113579877,
+      "containment": 0.0,
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "abstention_correct": 1.0,
+      "abstained": 0,
+      "gold_abstention": 0
+    },
+    "single-session-user": {
+      "n": 70,
+      "em": 0.0,
+      "f1": 0.04568071114035583,
+      "containment": 0.7714285714285715,
+      "r1": 1.0,
+      "r3": 1.0,
+      "r5": 1.0,
+      "abstention_correct": 0.9142857142857143,
+      "abstained": 0,
+      "gold_abstention": 6
+    },
+    "temporal-reasoning": {
+      "n": 133,
+      "em": 0.0,
+      "f1": 0.015580738158703429,
+      "containment": 0.22556390977443608,
+      "r1": 0.5338345864661654,
+      "r3": 0.924937343358396,
+      "r5": 0.9276942355889725,
+      "abstention_correct": 0.9548872180451128,
+      "abstained": 0,
+      "gold_abstention": 6
+    }
+  }
+}
