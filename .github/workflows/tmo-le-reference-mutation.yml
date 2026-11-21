@@ -1,0 +1,71 @@
+name: TMO-LE reference mutation gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_run_id:
+        description: ID of a run in this repository that uploaded the signed candidate
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  mutation-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CANDIDATE_SHA256: a7aac3ab8333acefd3cc3c1e6180d52d74605bf6ffe6e794137a02732bdbc5ac
+      CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Validate candidate run ID
+        shell: bash
+        run: |
+          if [[ ! "$CANDIDATE_RUN_ID" =~ ^[0-9]+$ ]]; then
+            echo 'Candidate run ID must be numeric.' >&2
+            exit 1
+          fi
+
+      - name: Download candidate from this repository
+        uses: actions/download-artifact@v4
+        with:
+          name: TMO-LE-v0.1.0-CANDIDATE
+          path: ${{ runner.temp }}/tmo-le-candidate
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.candidate_run_id }}
+
+      - name: Verify candidate before reading its dependencies
+        shell: bash
+        run: |
+          candidate="$RUNNER_TEMP/tmo-le-candidate/TMO-LE-v0.1.0-CANDIDATE.zip"
+          printf '%s  %s\n' "$CANDIDATE_SHA256" "$candidate" | sha256sum --check --strict -
+          unzip -p "$candidate" requirements-ci.txt > "$RUNNER_TEMP/tmo-le-requirements.txt"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Run mutation gate with pinned dependencies
+        shell: bash
+        run: |
+          python -m venv "$RUNNER_TEMP/tmo-le-venv"
+          venv_python="$RUNNER_TEMP/tmo-le-venv/bin/python"
+          "$venv_python" -m pip install --disable-pip-version-check \
+            -r "$RUNNER_TEMP/tmo-le-requirements.txt"
+          "$venv_python" scripts/tmo_release_mutation_gate.py \
+            "$RUNNER_TEMP/tmo-le-candidate/TMO-LE-v0.1.0-CANDIDATE.zip" \
+            --report "$RUNNER_TEMP/TMO-LE-Release-Mutation-Results.json"
+
+      - name: Retain mutation results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: TMO-LE-release-mutation-results
+          path: ${{ runner.temp }}/TMO-LE-Release-Mutation-Results.json
+          if-no-files-found: ignore
