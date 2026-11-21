@@ -6,6 +6,14 @@ on:
       - '.github/workflows/tmo-le-reference-mutation.yml'
       - 'scripts/tmo_release_mutation_gate.py'
   workflow_dispatch:
+  workflow_call:
+    outputs:
+      candidate_commit:
+        description: Private Git commit containing the checked candidate
+        value: ${{ jobs.mutation-gate.outputs.candidate_commit }}
+      candidate_sha256:
+        description: SHA-256 of the checked candidate ZIP
+        value: ${{ jobs.mutation-gate.outputs.candidate_sha256 }}
 
 permissions:
   contents: read
@@ -15,7 +23,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
+      CANDIDATE_COMMIT: a1d2923e9468ec458e9b96db56b6173f1883ffb2
       CANDIDATE_SHA256: a7aac3ab8333acefd3cc3c1e6180d52d74605bf6ffe6e794137a02732bdbc5ac
+    outputs:
+      candidate_commit: ${{ steps.verify.outputs.candidate_commit }}
+      candidate_sha256: ${{ steps.verify.outputs.candidate_sha256 }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,17 +36,20 @@ jobs:
       - name: Check out the staged candidate
         uses: actions/checkout@v4
         with:
-          ref: a1d2923e9468ec458e9b96db56b6173f1883ffb2
+          ref: ${{ env.CANDIDATE_COMMIT }}
           path: .tmo-le-candidate
           sparse-checkout: release-inputs
           persist-credentials: false
 
       - name: Verify candidate before reading its dependencies
+        id: verify
         shell: bash
         run: |
           candidate=".tmo-le-candidate/release-inputs/TMO-LE-v0.1.0-CANDIDATE.zip"
           printf '%s  %s\n' "$CANDIDATE_SHA256" "$candidate" | sha256sum --check --strict -
           unzip -p "$candidate" requirements-ci.txt > "$RUNNER_TEMP/tmo-le-requirements.txt"
+          printf 'candidate_commit=%s\ncandidate_sha256=%s\n' \
+            "$CANDIDATE_COMMIT" "$CANDIDATE_SHA256" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-python@v5
         with:
