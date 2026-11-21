@@ -16,11 +16,19 @@ mutants of the actual SHACL and query artifacts to fail their intended checks.
 It does not change the signed ZIP. When produced, the JSON is retained as
 `TMO-LE-release-mutation-results`, including on mutation failure.
 
-There is no signed reference candidate producer on the default branch, and the
-generic package build is not a substitute. This workflow does not publish
-anything and does not gate the npm release. To make
-it a required release gate later, call the same script from the workflow that
-produces the signed candidate before that workflow publishes. Review the
-oracles and digest pin whenever changing the signed baseline. These six checks
-do not replace the older 16 reference-logic mutations or establish operational
-or legal validity.
+## Signed reference publication
+
+**TMO-LE signed reference release** calls the same gate first. The publication
+job skips on pull requests, failed gates, non-`main` refs, and manual runs where
+`publish` is left unchecked. For a validation-only run on `main`, leave that
+box unchecked. Only after deliberate release approval, dispatch from `main`
+with `publish` checked. The job re-verifies the ZIP before writing a tag or
+release, then creates a GitHub prerelease with the ZIP and its checksum. It
+does not publish to npm or mark the release as latest.
+
+The workflow will not move an existing tag. If publication fails after tag
+creation, inspect GitHub Releases and the tag before retrying the same run. A
+separate manual release made outside this workflow is not governed by this
+check. Review the oracles and digest pin whenever changing the signed baseline.
+These six checks do not replace the older 16 reference-logic mutations or
+establish operational or legal validity.
