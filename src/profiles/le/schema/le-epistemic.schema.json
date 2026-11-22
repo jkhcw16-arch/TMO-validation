@@ -1,9 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://tmo.validation/schema/le-epistemic.schema.json",
-
   "title": "TMO LE Epistemic Layer",
-
   "description": "Schema for epistemic assessment, qualified dimensions, and withdrawal. Epistemic status describes evidentiary support rather than truth. Verification is dimension-specific.",
 
   "oneOf": [
@@ -19,7 +17,6 @@
 
     "activeStatus": {
       "type": "string",
-
       "enum": [
         "UNASSESSED",
         "SUPPORTED",
@@ -29,34 +26,16 @@
       ]
     },
 
-
-    "effectiveStatus": {
-      "type": "string",
-
-      "enum": [
-        "UNASSESSED",
-        "SUPPORTED",
-        "PARTIALLY_SUPPORTED",
-        "CONTRADICTION",
-        "INCONCLUSIVE",
-        "WITHDRAWN"
-      ]
-    },
-
-
     "disposition": {
       "type": "string",
-
       "enum": [
         "ACTIVE",
         "WITHDRAWN"
       ]
     },
 
-
     "qualificationStatus": {
       "type": "string",
-
       "enum": [
         "UNVERIFIED",
         "PARTIALLY_VERIFIED",
@@ -66,10 +45,8 @@
       ]
     },
 
-
     "qualificationDimension": {
       "type": "string",
-
       "enum": [
         "IDENTITY",
         "ROLE",
@@ -84,22 +61,17 @@
       ]
     },
 
-
     "idArray": {
       "type": "array",
-
       "items": {
         "type": "string",
         "minLength": 1
       },
-
       "uniqueItems": true
     },
 
-
     "evidence": {
       "type": "object",
-
       "additionalProperties": false,
 
       "required": [
@@ -129,53 +101,7 @@
       }
     },
 
-
     "qualifiedDimension": {
       "title": "LE Qualified Dimension",
 
-      "description": "Verification state for one independently qualified dimension. Verification applies only to the named dimension.",
-
-      "type": "object",
-
-      "additionalProperties": false,
-
-      "required": [
-        "dimension",
-        "status",
-        "requirementIds",
-        "verifiedRequirementIds",
-        "failedRequirementIds",
-        "unresolvedRequirementIds",
-        "evidenceItemIds",
-        "provenanceIds",
-        "derivationId"
-      ],
-
-      "properties": {
-
-        "dimension": {
-          "$ref": "#/$defs/qualificationDimension"
-        },
-
-        "status": {
-          "$ref": "#/$defs/qualificationStatus"
-        },
-
-        "requirementIds": {
-          "$ref": "#/$defs/idArray"
-        },
-
-        "verifiedRequirementIds": {
-          "$ref": "#/$defs/idArray"
-        },
-
-        "failedRequirementIds": {
-          "$ref": "#/$defs/idArray"
-        },
-
-        "unresolvedRequirementIds": {
-          "$ref": "#/$defs/idArray"
-        },
-
-        "evidenceItemIds": {
-          "$ref": "#/$defs
+      "type":
