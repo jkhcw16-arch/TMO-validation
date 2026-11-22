@@ -7,86 +7,87 @@
 
   "description": "Canonical resolution model for LEActor identity and LERole resolution.",
 
-  "$defs": {
-    "resolutionState": {
-      "title": "Resolution State",
+  "resolution": {
+  "title": "Canonical Resolution",
 
-      "type": "string",
+  "type": "object",
 
-      "enum": [
-        "RESOLVED",
-        "PROBABLE_MATCH",
-        "POSSIBLE_MATCH",
-        "UNRESOLVED",
-        "CONFLICT"
-      ]
+  "additionalProperties": false,
+
+  "required": [
+    "state",
+    "evidence",
+    "provenanceIds",
+    "derivationId"
+  ],
+
+  "properties": {
+    "state": {
+      "$ref": "#/$defs/resolutionState"
     },
 
-    "resolutionEvidence": {
-      "title": "Resolution Evidence",
+    "evidence": {
+      "$ref": "#/$defs/resolutionEvidence"
+    },
 
-      "type": "object",
+    "provenanceIds": {
+      "type": "array",
 
-      "additionalProperties": false,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
 
-      "required": [
-        "supporting",
-        "contradicting",
-        "unresolved"
-      ],
+      "uniqueItems": true
+    },
 
-      "properties": {
-        "supporting": {
-          "type": "array",
+    "derivationId": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
 
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "state"
+        ],
 
-          "uniqueItems": true
-        },
+        "properties": {
+          "state": {
+            "const": "CONFLICT"
+          }
+        }
+      },
 
-        "contradicting": {
-          "type": "array",
+      "then": {
+        "properties": {
+          "evidence": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/resolutionEvidence"
+              },
 
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
+              {
+                "properties": {
+                  "supporting": {
+                    "minItems": 1
+                  },
 
-          "uniqueItems": true
-        },
-
-        "unresolved": {
-          "type": "array",
-
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
-
-          "uniqueItems": true
+                  "contradicting": {
+                    "minItems": 1
+                  }
+                }
+              }
+            ]
+          }
         }
       }
-    },
+    }
+  ]
+}
 
-    "resolution": {
-      "title": "Canonical Resolution",
-
-      "type": "object",
-
-      "additionalProperties": false,
-
-      "required": [
-        "state",
-        "evidence",
-        "provenanceIds",
-        "derivationId"
-      ],
-
-      "properties": {
-        "state": {
           "$ref": "#/$defs/resolutionState"
         },
 
