@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tmo.validation/schema/le-epistemic.schema.json",
+  "title": "TMO LE Epistemic Layer",
+  "description": "Schema for epistemic assessment, qualified dimensions, and withdrawal. Epistemic status describes evidentiary support rather than truth. Verification is dimension-specific.",
+
+  "oneOf": [
+    {
+      "$ref": "#/$defs/assessment"
+    },
+    {
+      "$ref": "#/$defs/withdrawal"
+    }
+  ],
+
+  "$defs": {
+
+    "activeStatus": {
+      "type": "string",
+      "enum": [
+        "UNASSESSED",
+        "SUPPORTED",
+        "PARTIALLY_SUPPORTED",
+        "CONTRADICTION",
+        "INCONCLUSIVE"
+      ]
+    },
+
+    "disposition": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "WITHDRAWN"
+      ]
+    },
+
+    "qualificationStatus": {
+      "type": "string",
+      "enum": [
+        "UNVERIFIED",
+        "PARTIALLY_VERIFIED",
+        "VERIFIED",
+        "FAILED",
+        "INDETERMINATE"
+      ]
+    },
+
+    "qualificationDimension": {
+      "type": "string",
+      "enum": [
+        "IDENTITY",
+        "ROLE",
+        "SOURCE",
+        "PROVENANCE",
+        "TEMPORAL",
+        "ASSERTION",
+        "EVIDENCE",
+        "RELATION",
+        "AUTHORIZATION",
+        "DERIVATION"
+      ]
+    },
+
+    "idArray": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+
+      "required": [
+        "supportingEvidenceIds",
+        "contradictingEvidenceIds",
+        "unresolvedEvidenceIds",
+        "provenanceIds"
+      ],
+
+      "properties": {
+
+        "supportingEvidenceIds": {
+          "$ref": "#/$defs/idArray"
+        },
+
+        "contradictingEvidenceIds": {
+          "$ref": "#/$defs/idArray"
+        },
+
+        "unresolvedEvidenceIds": {
+          "$ref": "#/$defs/idArray"
+        },
+
+        "provenanceIds": {
+          "$ref": "#/$defs/idArray"
+        }
+      }
+    },
+
+    "qualifiedDimension": {
+      "title": "LE Qualified Dimension",
+
+      "type":
