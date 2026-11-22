@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tmo.validation/schema/le-event.schema.json",
+  "title": "TMO LEEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "eventType", "time", "source", "origin", "provenanceStatus", "provenance"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "type": { "const": "LEEvent" },
+    "eventType": { "type": "string", "minLength": 1 },
+    "time": { "$ref": "#/$defs/time" },
+    "source": { "type": "string", "minLength": 1 },
+    "origin": { "enum": ["OBSERVED", "REPORTED", "DERIVED", "SYNTHETIC"] },
+    "provenanceStatus": { "enum": ["ESTABLISHED", "LIMITED", "INDETERMINATE"] },
+    "provenance": { "type": "array", "items": { "$ref": "#/$defs/provenanceAddress" }, "uniqueItems": true }
+  },
+  "allOf": [
+    {
+      "if": { "required": ["origin"], "properties": { "origin": { "const": "SYNTHETIC" } } },
+      "else": { "properties": { "provenance": { "minItems": 1 } } }
+    }
+  ],
+  "$defs": {
+    "time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["precision"],
+      "properties": {
+        "earliest": { "type": ["string", "null"], "format": "date-time" },
+        "latest": { "type": ["string", "null"], "format": "date-time" },
+        "precision": { "enum": ["EXACT", "BOUNDED", "APPROXIMATE", "UNKNOWN"] }
+      },
+      "allOf": [
+        {
+          "if": { "required": ["precision"], "properties": { "precision": { "const": "UNKNOWN" } } },
+          "then": { "properties": { "earliest": { "type": "null" }, "latest": { "type": "null" } } },
+          "else": { "required": ["earliest", "latest"], "properties": { "earliest": { "type": "string", "format": "date-time" }, "latest": { "type": "string", "format": "date-time" } } }
+        }
+      ]
+    },
+    "provenanceAddress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceRecordId", "provenanceRecordId"],
+      "properties": {
+        "sourceRecordId": { "type": "string", "minLength": 1 },
+        "provenanceRecordId": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
