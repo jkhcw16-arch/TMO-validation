@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+  "$id": "https://tmo.validation/schema/le-resolution.schema.json",
+
+  "title": "TMO LE Identity and Role Resolution",
+
+  "description": "Canonical resolution model for LEActor identity and LERole resolution.",
+
+  "$defs": {
+    "resolutionState": {
+      "title": "Resolution State",
+
+      "type": "string",
+
+      "enum": [
+        "RESOLVED",
+        "PROBABLE_MATCH",
+        "POSSIBLE_MATCH",
+        "UNRESOLVED",
+        "CONFLICT"
+      ]
+    },
+
+    "resolutionEvidence": {
+      "title": "Resolution Evidence",
+
+      "type": "object",
+
+      "additionalProperties": false,
+
+      "required": [
+        "supporting",
+        "contradicting",
+        "unresolved"
+      ],
+
+      "properties": {
+        "supporting": {
+          "type": "array",
+
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+
+          "uniqueItems": true
+        },
+
+        "contradicting": {
+          "type": "array",
+
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+
+          "uniqueItems": true
+        },
+
+        "unresolved": {
+          "type": "array",
+
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+
+          "uniqueItems": true
+        }
+      }
+    },
+
+    "resolution": {
+      "title": "Canonical Resolution",
+
+      "type": "object",
+
+      "additionalProperties": false,
+
+      "required": [
+        "state",
+        "evidence",
+        "provenanceIds",
+        "derivationId"
+      ],
+
+      "properties": {
+        "state": {
+          "$ref": "#/$defs/resolutionState"
+        },
+
+        "evidence": {
+          "$ref": "#/$defs/resolutionEvidence"
+        },
+
+        "provenanceIds": {
+          "type": "array",
+
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+
+          "uniqueItems": true
+        },
+
+        "derivationId": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+
+    "identityResolution": {
+      "title": "LEActor Identity Resolution",
+
+      "type": "object",
+
+      "additionalProperties": false,
+
+      "required": [
+        "actorId",
+        "candidateActorId",
+        "resolution"
+      ],
+
+      "properties": {
+        "actorId": {
+          "type": "string",
+          "minLength": 1
+        },
+
+        "candidateActorId": {
+          "type": [
+            "string",
+            "null"
+          ],
+
+          "minLength": 1
+        },
+
+        "resolution": {
+          "$ref": "#/$defs/resolution"
+        }
+      }
+    },
+
+    "roleResolution": {
+      "title": "LERole Resolution",
+
+      "type": "object",
+
+      "additionalProperties": false,
+
+      "required": [
+        "actorId",
+        "roleId",
+        "resolution"
+      ],
+
+      "properties": {
+        "actorId": {
+          "type": "string",
+          "minLength": 1
+        },
+
+        "roleId": {
+          "type": [
+            "string",
+            "null"
+          ],
+
+          "minLength": 1
+        },
+
+        "resolution": {
+          "$ref": "#/$defs/resolution"
+        }
+      }
+    },
+
+    "identityRoleResolution": {
+      "title": "Combined Identity and Role Resolution",
+
+      "description": "Identity and role remain independently resolved.",
+
+      "type": "object",
+
+      "additionalProperties": false,
+
+      "required": [
+        "identity",
+        "role"
+      ],
+
+      "properties": {
+        "identity": {
+          "$ref": "#/$defs/identityResolution"
+        },
+
+        "role": {
+          "$ref": "#/$defs/roleResolution"
+        }
+      }
+    }
+  },
+
+  "$ref": "#/$defs/identityRoleResolution"
+}
