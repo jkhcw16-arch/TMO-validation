@@ -1,15 +1,25 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://tmo.validation/schema/le-epistemic.schema.json",
+
   "title": "TMO LE Epistemic Layer",
-  "description": "Schema for epistemic assessment and withdrawal. Epistemic status represents evidentiary support, not truth.",
+
+  "description": "Schema for epistemic assessment, qualified dimensions, and withdrawal. Epistemic status describes evidentiary support rather than truth. Verification is dimension-specific.",
+
   "oneOf": [
-    { "$ref": "#/$defs/assessment" },
-    { "$ref": "#/$defs/withdrawal" }
+    {
+      "$ref": "#/$defs/assessment"
+    },
+    {
+      "$ref": "#/$defs/withdrawal"
+    }
   ],
+
   "$defs": {
+
     "activeStatus": {
       "type": "string",
+
       "enum": [
         "UNASSESSED",
         "SUPPORTED",
@@ -18,8 +28,11 @@
         "INCONCLUSIVE"
       ]
     },
+
+
     "effectiveStatus": {
       "type": "string",
+
       "enum": [
         "UNASSESSED",
         "SUPPORTED",
@@ -29,165 +42,140 @@
         "WITHDRAWN"
       ]
     },
+
+
     "disposition": {
       "type": "string",
-      "enum": ["ACTIVE", "WITHDRAWN"]
+
+      "enum": [
+        "ACTIVE",
+        "WITHDRAWN"
+      ]
     },
+
+
+    "qualificationStatus": {
+      "type": "string",
+
+      "enum": [
+        "UNVERIFIED",
+        "PARTIALLY_VERIFIED",
+        "VERIFIED",
+        "FAILED",
+        "INDETERMINATE"
+      ]
+    },
+
+
+    "qualificationDimension": {
+      "type": "string",
+
+      "enum": [
+        "IDENTITY",
+        "ROLE",
+        "SOURCE",
+        "PROVENANCE",
+        "TEMPORAL",
+        "ASSERTION",
+        "EVIDENCE",
+        "RELATION",
+        "AUTHORIZATION",
+        "DERIVATION"
+      ]
+    },
+
+
     "idArray": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 },
+
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+
       "uniqueItems": true
     },
+
+
     "evidence": {
       "type": "object",
+
       "additionalProperties": false,
+
       "required": [
         "supportingEvidenceIds",
         "contradictingEvidenceIds",
         "unresolvedEvidenceIds",
         "provenanceIds"
       ],
+
       "properties": {
-        "supportingEvidenceIds": { "$ref": "#/$defs/idArray" },
-        "contradictingEvidenceIds": { "$ref": "#/$defs/idArray" },
-        "unresolvedEvidenceIds": { "$ref": "#/$defs/idArray" },
-        "provenanceIds": { "$ref": "#/$defs/idArray" }
-      }
-    },
-    "assessment": {
-      "title": "LE Epistemic Assessment",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "resourceId",
-        "status",
-        "disposition",
-        "evidence",
-        "derivationId",
-        "auditRef"
-      ],
-      "properties": {
-        "resourceId": { "type": "string", "minLength": 1 },
-        "status": { "$ref": "#/$defs/activeStatus" },
-        "disposition": { "$ref": "#/$defs/disposition" },
-        "evidence": { "$ref": "#/$defs/evidence" },
-        "derivationId": { "type": "string", "minLength": 1 },
-        "auditRef": { "type": "string", "minLength": 1 }
-      },
-      "allOf": [
-        {
-          "if": {
-            "required": ["status"],
-            "properties": { "status": { "const": "UNASSESSED" } }
-          },
-          "then": {
-            "properties": {
-              "evidence": {
-                "properties": {
-                  "supportingEvidenceIds": { "maxItems": 0 },
-                  "contradictingEvidenceIds": { "maxItems": 0 },
-                  "unresolvedEvidenceIds": { "maxItems": 0 }
-                }
-              }
-            }
-          }
+
+        "supportingEvidenceIds": {
+          "$ref": "#/$defs/idArray"
         },
-        {
-          "if": {
-            "required": ["status"],
-            "properties": { "status": { "const": "SUPPORTED" } }
-          },
-          "then": {
-            "properties": {
-              "evidence": {
-                "properties": {
-                  "supportingEvidenceIds": { "minItems": 1 },
-                  "contradictingEvidenceIds": { "maxItems": 0 },
-                  "provenanceIds": { "minItems": 1 }
-                }
-              }
-            }
-          }
+
+        "contradictingEvidenceIds": {
+          "$ref": "#/$defs/idArray"
         },
-        {
-          "if": {
-            "required": ["status"],
-            "properties": { "status": { "const": "PARTIALLY_SUPPORTED" } }
-          },
-          "then": {
-            "properties": {
-              "evidence": {
-                "required": ["supportingEvidenceIds"],
-                "properties": {
-                  "supportingEvidenceIds": { "minItems": 1 },
-                  "provenanceIds": { "minItems": 1 }
-                },
-                "anyOf": [
-                  { "properties": { "unresolvedEvidenceIds": { "minItems": 1 } } },
-                  { "properties": { "contradictingEvidenceIds": { "minItems": 1 } } }
-                ]
-              }
-            }
-          }
+
+        "unresolvedEvidenceIds": {
+          "$ref": "#/$defs/idArray"
         },
-        {
-          "if": {
-            "required": ["status"],
-            "properties": { "status": { "const": "CONTRADICTION" } }
-          },
-          "then": {
-            "properties": {
-              "evidence": {
-                "properties": {
-                  "supportingEvidenceIds": { "minItems": 1 },
-                  "contradictingEvidenceIds": { "minItems": 1 },
-                  "provenanceIds": { "minItems": 1 }
-                }
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "required": ["status"],
-            "properties": { "status": { "const": "INCONCLUSIVE" } }
-          },
-          "then": {
-            "properties": {
-              "evidence": {
-                "anyOf": [
-                  { "properties": { "supportingEvidenceIds": { "minItems": 1 } } },
-                  { "properties": { "contradictingEvidenceIds": { "minItems": 1 } } },
-                  { "properties": { "unresolvedEvidenceIds": { "minItems": 1 } } }
-                ]
-              }
-            }
-          }
+
+        "provenanceIds": {
+          "$ref": "#/$defs/idArray"
         }
-      ]
-    },
-    "withdrawal": {
-      "title": "LE Epistemic Withdrawal",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "resourceId",
-        "previousStatus",
-        "status",
-        "reason",
-        "derivationId",
-        "auditRef",
-        "withdrawnAt"
-      ],
-      "properties": {
-        "resourceId": { "type": "string", "minLength": 1 },
-        "previousStatus": { "$ref": "#/$defs/activeStatus" },
-        "status": { "const": "WITHDRAWN" },
-        "reason": { "type": "string", "minLength": 1 },
-        "derivationId": { "type": "string", "minLength": 1 },
-        "auditRef": { "type": "string", "minLength": 1 },
-        "withdrawnAt": { "type": "string", "format": "date-time" }
       }
-    }
-  }
-}
+    },
+
+
+    "qualifiedDimension": {
+      "title": "LE Qualified Dimension",
+
+      "description": "Verification state for one independently qualified dimension. Verification applies only to the named dimension.",
+
+      "type": "object",
+
+      "additionalProperties": false,
+
+      "required": [
+        "dimension",
+        "status",
+        "requirementIds",
+        "verifiedRequirementIds",
+        "failedRequirementIds",
+        "unresolvedRequirementIds",
+        "evidenceItemIds",
+        "provenanceIds",
+        "derivationId"
+      ],
+
+      "properties": {
+
+        "dimension": {
+          "$ref": "#/$defs/qualificationDimension"
+        },
+
+        "status": {
+          "$ref": "#/$defs/qualificationStatus"
+        },
+
+        "requirementIds": {
+          "$ref": "#/$defs/idArray"
+        },
+
+        "verifiedRequirementIds": {
+          "$ref": "#/$defs/idArray"
+        },
+
+        "failedRequirementIds": {
+          "$ref": "#/$defs/idArray"
+        },
+
+        "unresolvedRequirementIds": {
+          "$ref": "#/$defs/idArray"
+        },
+
+        "evidenceItemIds": {
+          "$ref": "#/$defs
