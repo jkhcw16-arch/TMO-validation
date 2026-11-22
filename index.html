@@ -1,31 +1,31 @@
 <!doctype html>
-<html lang="en">
 
-<head>
-  <meta charset="utf-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
 
-  <meta
-    name="description"
-    content="TMO Validation: validation artifacts, traceability, reference implementation, and answer-accuracy work."
-  >
+  
 
-  <title>TMO Validation</title>
+  
 
-  <style>
+  
+
+  TMO Validation
+
+  
     :root {
       color-scheme: dark;
+
       --bg: #07111f;
       --card: #0e1b2c;
+      --card-soft: #0a1727;
+
       --line: #20334d;
       --text: #eef6ff;
       --muted: #a8b7ca;
+
       --accent: #62d0ff;
       --green: #75e0a7;
+      --amber: #f5c26b;
+      --red: #ff8b8b;
     }
 
     * {
@@ -39,7 +39,13 @@
 
     body {
       margin: 0;
-      font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+
+      font:
+        16px/1.55
+        system-ui,
+        -apple-system,
+        "Segoe UI",
+        sans-serif;
 
       background:
         radial-gradient(
@@ -59,16 +65,18 @@
       top: 0;
       z-index: 1000;
 
-      border-bottom: 1px solid var(--line);
+      border-bottom:
+        1px solid var(--line);
 
-      background: rgba(7, 17, 31, 0.94);
+      background:
+        rgba(7, 17, 31, 0.94);
 
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
 
     .nav-inner {
-      width: min(980px, 92%);
+      width: min(1080px, 92%);
       margin: auto;
 
       min-height: 64px;
@@ -77,11 +85,12 @@
       align-items: center;
       justify-content: space-between;
 
-      gap: 24px;
+      gap: 22px;
     }
 
     .brand {
       color: var(--text);
+
       text-decoration: none;
 
       font-weight: 800;
@@ -98,7 +107,7 @@
       display: flex;
       align-items: center;
 
-      gap: 22px;
+      gap: 18px;
     }
 
     .nav-links a {
@@ -106,10 +115,12 @@
 
       text-decoration: none;
 
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 600;
 
-      transition: color 0.2s ease;
+      transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
     }
 
     .nav-links a:hover,
@@ -120,12 +131,10 @@
     .github-button {
       padding: 8px 14px;
 
-      border: 1px solid var(--line);
-      border-radius: 10px;
+      border:
+        1px solid var(--line);
 
-      transition:
-        border-color 0.2s ease,
-        color 0.2s ease;
+      border-radius: 10px;
     }
 
     .github-button:hover,
@@ -133,19 +142,20 @@
       border-color: var(--accent);
     }
 
-    /* Mobile menu button */
-
     .menu-button {
       display: none;
+
       appearance: none;
 
-      border: 1px solid var(--line);
+      padding: 8px 12px;
+
+      border:
+        1px solid var(--line);
+
       border-radius: 10px;
 
       background: var(--card);
       color: var(--text);
-
-      padding: 8px 12px;
 
       font: inherit;
       font-weight: 700;
@@ -153,26 +163,20 @@
       cursor: pointer;
     }
 
-    .menu-button:hover,
-    .menu-button:focus-visible {
-      border-color: var(--accent);
-    }
-
-    /* Main */
+    /* Page */
 
     main {
-      width: min(980px, 92%);
+      width: min(1080px, 92%);
       margin: auto;
 
       padding: 72px 0;
     }
 
-    /* Hero */
-
     .eyebrow {
       color: var(--green);
 
       font-weight: 700;
+
       letter-spacing: 0.12em;
 
       text-transform: uppercase;
@@ -181,67 +185,95 @@
     h1 {
       margin: 0.25em 0;
 
-      font-size: clamp(
-        2.7rem,
-        8vw,
-        5.8rem
-      );
+      font-size:
+        clamp(
+          2.7rem,
+          8vw,
+          5.8rem
+        );
 
       line-height: 0.95;
     }
 
     .lead {
-      max-width: 720px;
+      max-width: 780px;
+
+      color: var(--muted);
 
       font-size: 1.2rem;
+    }
+
+    .section-heading {
+      margin-top: 72px;
+    }
+
+    .section-heading h2 {
+      margin: 8px 0 10px;
+
+      font-size: 1.9rem;
+    }
+
+    .section-heading p {
+      max-width: 800px;
+
+      margin: 0;
 
       color: var(--muted);
     }
 
-    /* About */
+    /* Overview panel */
 
-    .about {
+    .overview {
       margin-top: 72px;
 
-      padding: 32px;
+      padding: 30px;
 
-      border: 1px solid var(--line);
+      border:
+        1px solid var(--line);
+
       border-radius: 18px;
 
-      background: rgba(14, 27, 44, 0.72);
+      background:
+        rgba(14, 27, 44, 0.72);
     }
 
-    .about h2 {
+    .overview h2 {
       margin: 8px 0 12px;
 
       font-size: 1.8rem;
     }
 
-    .about p {
-      max-width: 760px;
+    .overview p {
+      max-width: 850px;
 
-      margin: 0;
+      color: var(--muted);
+    }
+
+    .architecture-flow {
+      margin-top: 24px;
+
+      padding: 18px 20px;
+
+      border-left:
+        3px solid var(--green);
+
+      border-radius: 8px;
+
+      background: var(--card-soft);
 
       color: var(--muted);
 
-      font-size: 1.05rem;
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Consolas,
+        monospace;
+
+      overflow-wrap: anywhere;
     }
 
-    .about strong {
-      color: var(--text);
-    }
-
-    /* Resources */
-
-    .resources-heading {
-      margin-top: 72px;
-    }
-
-    .resources-heading h2 {
-      margin: 8px 0 0;
-
-      font-size: 1.8rem;
-    }
+    /* Cards */
 
     .grid {
       display: grid;
@@ -262,12 +294,15 @@
 
       padding: 22px;
 
-      border: 1px solid var(--line);
+      border:
+        1px solid var(--line);
+
       border-radius: 18px;
 
       background: var(--card);
 
       color: inherit;
+
       text-decoration: none;
 
       transition:
@@ -278,11 +313,13 @@
     .card:hover,
     .card:focus-visible {
       border-color: var(--accent);
-      transform: translateY(-2px);
+
+      transform:
+        translateY(-2px);
     }
 
     .card h3 {
-      margin: 0 0 7px;
+      margin: 0 0 8px;
 
       font-size: 1.05rem;
     }
@@ -293,14 +330,163 @@
       color: var(--muted);
     }
 
+    .rule-number {
+      display: inline-block;
+
+      margin-bottom: 9px;
+
+      color: var(--green);
+
+      font-size: 0.82rem;
+      font-weight: 800;
+
+      letter-spacing: 0.08em;
+    }
+
+    /* Status groups */
+
+    .status-group {
+      margin-top: 20px;
+
+      padding: 22px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 16px;
+
+      background: var(--card-soft);
+    }
+
+    .status-group h3 {
+      margin-top: 0;
+    }
+
+    .status-list {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 9px;
+    }
+
+    .status {
+      padding: 7px 10px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 999px;
+
+      color: var(--muted);
+
+      font-size: 0.88rem;
+    }
+
+    .status.good {
+      color: var(--green);
+    }
+
+    .status.warning {
+      color: var(--amber);
+    }
+
+    .status.danger {
+      color: var(--red);
+    }
+
+    /* Score */
+
+    .score {
+      margin-top: 24px;
+
+      padding: 26px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 18px;
+
+      background: var(--card);
+    }
+
+    .score-equation {
+      margin: 18px 0;
+
+      color: var(--accent);
+
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Consolas,
+        monospace;
+
+      font-size: 1.03rem;
+    }
+
+    .score-signs {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0, 1fr)
+        );
+
+      gap: 12px;
+    }
+
+    .score-sign {
+      padding: 14px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 12px;
+
+      background: var(--card-soft);
+    }
+
+    .score-sign strong {
+      display: block;
+
+      color: var(--text);
+    }
+
+    .score-sign span {
+      color: var(--muted);
+    }
+
+    /* Precedence */
+
+    .precedence {
+      margin-top: 24px;
+
+      display: grid;
+
+      gap: 8px;
+    }
+
+    .precedence div {
+      padding: 13px 16px;
+
+      border-left:
+        3px solid var(--accent);
+
+      background: var(--card-soft);
+
+      color: var(--muted);
+    }
+
     /* Footer */
 
     footer {
-      margin-top: 64px;
+      margin-top: 72px;
 
       padding-top: 24px;
 
-      border-top: 1px solid var(--line);
+      border-top:
+        1px solid var(--line);
 
       color: var(--muted);
 
@@ -313,7 +499,7 @@
 
     /* Mobile */
 
-    @media (max-width: 680px) {
+    @media (max-width: 760px) {
 
       .nav-inner {
         min-height: 60px;
@@ -368,290 +554,518 @@
       }
 
       h1 {
-        font-size: clamp(
-          2.7rem,
-          15vw,
-          4.5rem
-        );
+        font-size:
+          clamp(
+            2.7rem,
+            15vw,
+            4.5rem
+          );
       }
 
       .lead {
         font-size: 1.08rem;
       }
 
-      .about {
+      .overview,
+      .section-heading {
         margin-top: 52px;
+      }
 
+      .overview {
         padding: 24px 20px;
       }
 
-      .resources-heading {
-        margin-top: 52px;
+      .score-signs {
+        grid-template-columns:
+          1fr;
       }
     }
-  </style>
-</head>
+  
 
-<body>
+
+
 
   <!-- Navigation -->
 
-  <nav
-    class="navbar"
-    aria-label="Main navigation"
-  >
-    <div class="nav-inner">
+  
 
-      <a
-        class="brand"
-        href="#home"
-      >
-        TMO <span>Validation</span>
-      </a>
+    
 
-      <button
-        class="menu-button"
-        type="button"
-        id="menuButton"
-        aria-expanded="false"
-        aria-controls="navLinks"
-      >
-        Menu
-      </button>
-
-      <div
-        class="nav-links"
-        id="navLinks"
-      >
-
-        <a href="#home">
-          Home
-        </a>
-
-        <a href="#about">
-          About
-        </a>
-
-        <a href="#resources">
-          Resources
-        </a>
-
-        <a
-          href="./PTM-Answer-Accuracy-Improvement-v1.2.1.md"
-        >
-          PTM Accuracy
-        </a>
-
-        <a
-          href="./PTM_TMO_Traceability_With_Validation_Report.xlsx"
-        >
-          Traceability
-        </a>
-
-        <a
-          class="github-button"
-          href="https://github.com/jkhcw16-arch/TMO-validation"
-        >
-          GitHub
-        </a>
-
-      </div>
-
-    </div>
-  </nav>
-
-  <!-- Main content -->
-
-  <main>
-
-    <!-- Home -->
-
-    <header id="home">
-
-      <div class="eyebrow">
+      
         TMO Validation
-      </div>
+      
 
-      <h1>
-        Validation,<br>
-        made inspectable.
-      </h1>
+      
+        Menu
+      
 
-      <p class="lead">
-        A public entry point for TMO validation artifacts,
-        traceability, reference implementation work,
-        diagnostics, and PTM answer-accuracy evaluation.
-      </p>
+      
 
-    </header>
+        
+          Home
+        
 
-    <!-- About -->
+        
+          Invariants
+        
 
-    <section
-      class="about"
-      id="about"
-    >
+        
+          Epistemic
+        
 
-      <div class="eyebrow">
-        About
-      </div>
+        
+          Evidence
+        
 
-      <h2>
-        About TMO Validation
-      </h2>
-
-      <p>
-        <strong>TMO Validation</strong>
-        provides a central, inspectable location for
-        validation artifacts, traceability materials,
-        reference implementation work, diagnostics,
-        release documentation, and PTM
-        answer-accuracy evaluation.
-      </p>
-
-    </section>
-
-    <!-- Resources -->
-
-    <section id="resources">
-
-      <div class="resources-heading">
-
-        <div class="eyebrow">
+        
           Resources
-        </div>
+        
 
-        <h2>
-          Validation artifacts
-        </h2>
+        
+          Traceability
+        
 
-      </div>
+        
+          GitHub
+        
 
-      <div class="grid">
+      
 
-        <a
-          class="card"
-          href="./docs/tmo-le-reference-mutation-ci.md"
-        >
+    
 
-          <h3>
-            TMO-LE Reference &amp; CI
-          </h3>
+  
 
-          <p>
-            Reference mutation and
-            continuous-integration documentation.
-          </p>
 
-        </a>
+  
 
-        <a
-          class="card"
-          href="./PTM-Answer-Accuracy-Improvement-v1.2.1.md"
-        >
+    <!-- Hero -->
 
-          <h3>
-            PTM Answer Accuracy
-          </h3>
+    
 
-          <p>
-            Accuracy-improvement report
-            and supporting work.
-          </p>
+      
+        TMO Validation
+      
 
-        </a>
+      
+        Validation,<ms-copilot-line-break>
+        made inspectable.
+      
 
-        <a
-          class="card"
-          href="./PTM_TMO_Traceability_With_Validation_Report.xlsx"
-        >
+      
+        A public entry point for TMO validation artifacts,
+        TMO-LE evidence semantics, provenance-aware inference,
+        epistemic assessment, traceability, diagnostics,
+        and PTM answer-accuracy evaluation.
+      
 
-          <h3>
-            Traceability Report
-          </h3>
+    
 
-          <p>
-            Download the validation and
-            traceability workbook.
-          </p>
 
-        </a>
+    <!-- Architecture -->
 
-        <a
-          class="card"
-          href="./TMO-LE-v0.1.0-Final-Release-Report.docx"
-        >
+    
 
-          <h3>
-            Release Report
-          </h3>
+      
+        Current architecture
+      
 
-          <p>
-            Download the TMO-LE
-            final release report.
-          </p>
+      
+        TMO-LE evidence validation
+      
 
-        </a>
+      
+        TMO-LE separates preserved resources, assertions,
+        evidence, provenance, derivations, qualified dimensions,
+        epistemic assessment, conflict resolution,
+        calibrated evidence scoring, thresholds,
+        escalation, and audit history.
+      
 
-      </div>
+      
+        Preserved resource
+        → provenance
+        → evidence qualification
+        → qualified dimensions
+        → proposition evidence score
+        → epistemic assessment
+        → threshold / escalation
+        → audit
+      
 
-    </section>
+    
 
-    <!-- Footer -->
 
-    <footer>
+    <!-- Foundational invariants -->
 
-      Source:
+    
 
-      <a
-        href="https://github.com/jkhcw16-arch/TMO-validation"
-      >
-        github.com/jkhcw16-arch/TMO-validation
-      </a>
+      
 
-    </footer>
+        
+          Foundation
+        
 
-  </main>
+        
+          TMO-LE foundational invariants
+        
 
-  <!-- Mobile menu functionality -->
+        
+          Interpretation may reduce uncertainty only when
+          additional evidence justifies that reduction.
+          Transformation alone cannot create knowledge.
+        
 
-  <script>
-    const menuButton =
-      document.getElementById("menuButton");
+      
 
-    const navLinks =
-      document.getElementById("navLinks");
+      
 
-    menuButton.addEventListener(
-      "click",
-      () => {
-        const isOpen =
-          navLinks.classList.toggle("open");
+        
 
-        menuButton.setAttribute(
-          "aria-expanded",
-          String(isOpen)
-        );
-      }
-    );
+          
+            LE-101
+          
 
-    navLinks.addEventListener(
-      "click",
-      (event) => {
-        if (
-          event.target.tagName === "A" &&
-          window.innerWidth <= 680
-        ) {
-          navLinks.classList.remove("open");
+          
+            Preservation before interpretation
+          
 
-          menuButton.setAttribute(
-            "aria-expanded",
-            "false"
-          );
-        }
-      }
-    );
-  </script>
+          
+            Preserve what was observed before deciding
+            what the observation means.
+          
 
-</body>
-</html>
+        
+
+
+        
+
+          
+            LE-102
+          
+
+          
+            Assertion is not fact
+          
+
+          
+            Recording a proposition does not establish
+            that proposition as fact.
+          
+
+        
+
+
+        
+
+          
+            LE-103
+          
+
+          
+            Unknown is not zero or pass
+          
+
+          
+            Missing or unresolved information remains
+            explicit rather than becoming a default value.
+          
+
+        
+
+
+        
+
+          
+            LE-104
+          
+
+          
+            Independence is origin-based
+          
+
+          
+            Multiple records derived from one origin
+            do not become independent corroboration.
+          
+
+        
+
+
+        
+
+          
+            LE-105
+          
+
+          
+            Finding strength is provenance-bounded
+          
+
+          
+            A finding cannot become stronger than
+            the evidentiary provenance supporting it.
+          
+
+        
+
+
+        
+
+          
+            LE-106
+          
+
+          
+            Temporal precision cannot be manufactured
+          
+
+          
+            Derived temporal claims cannot become
+            more precise without additional evidence.
+          
+
+        
+
+
+        
+
+          
+            LE-107
+          
+
+          
+            Relations remain separate
+          
+
+          
+            Association, attribution, coordination,
+            causation, and authorization require
+            separate evidentiary support.
+          
+
+        
+
+      
+
+    
+
+
+    <!-- Resolution -->
+
+    
+
+      
+
+        
+          Identity and role
+        
+
+        
+          Resolution model
+        
+
+        
+          Identity and role are evaluated independently.
+          Resolved identity does not automatically resolve role,
+          agency, attribution, causation, or authorization.
+        
+
+      
+
+      
+
+        
+          Resolution states
+        
+
+        
+
+          
+            RESOLVED
+          
+
+          
+            PROBABLE MATCH
+          
+
+          
+            POSSIBLE MATCH
+          
+
+          
+            UNRESOLVED
+          
+
+          
+            CONFLICT
+          
+
+        
+
+      
+
+    
+
+
+    <!-- Epistemic -->
+
+    
+
+      
+
+        
+          Epistemic Layer
+        
+
+        
+          Evidentiary status without truth inflation
+        
+
+        
+          Epistemic status describes what the available
+          evidence presently supports. It does not transform
+          an assertion into an unqualified fact.
+        
+
+      
+
+      
+
+        
+          Epistemic states
+        
+
+        
+
+          
+            UNASSESSED
+          
+
+          
+            SUPPORTED
+          
+
+          
+            PARTIALLY SUPPORTED
+          
+
+          
+            CONTRADICTION
+          
+
+          
+            INCONCLUSIVE
+          
+
+          
+            WITHDRAWN
+          
+
+        
+
+      
+
+
+      
+
+        
+          Qualified dimensions
+        
+
+        
+          Verification applies only to the named dimension.
+          For example, verified identity does not verify role
+          or authorization.
+        
+
+        
+
+          
+            UNVERIFIED
+          
+
+          
+            PARTIALLY VERIFIED
+          
+
+          
+            VERIFIED
+          
+
+          
+            FAILED
+          
+
+          
+            INDETERMINATE
+          
+
+        
+
+      
+
+    
+
+
+    <!-- Evidence weighting -->
+
+    
+
+      
+
+        
+          Evidence weighting
+        
+
+        
+          Proposition-specific evidence assessment
+        
+
+        
+          Evidence weight belongs to the relationship
+          between an evidence item and a proposition.
+          Weight does not establish truth and cannot
+          exceed provenance support.
+        
+
+      
+
+      
+
+        
+          Relevance
+          
+            How directly the evidence bears on
+            the proposition.
+          
+        
+
+        
+          Context
+          
+            Whether the evidence applies within
+            the proposition's relevant circumstances.
+          
+        
+
+        
+          Specific source identity
+          
+            Whether the particular source is
+            sufficiently identified for the use.
+          
+        
+
+        
+          Authenticity
+          
+            Whether the item is adequately supported
+            as what it purports to be.
+          
+        
+
+        
+          Independence
+          
+            Whether the evidence represents an origin
+            independent of other evidence being counted.
