@@ -1,0 +1,82 @@
+name: TMO-LE signed reference release
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/tmo-le-reference-release.yml'
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish the TMO-LE v0.1.0 reference-only prerelease if validation passes
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  reference-gate:
+    uses: ./.github/workflows/tmo-le-reference-mutation.yml
+
+  publish-reference:
+    name: Publish verified reference candidate
+    needs: reference-gate
+    if: >-
+      ${{ success() && github.event_name == 'workflow_dispatch' &&
+          github.ref == 'refs/heads/main' && inputs.publish }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    concurrency:
+      group: tmo-le-reference-v0.1.0-publication
+      cancel-in-progress: false
+    env:
+      CANDIDATE_COMMIT: ${{ needs.reference-gate.outputs.candidate_commit }}
+      CANDIDATE_SHA256: ${{ needs.reference-gate.outputs.candidate_sha256 }}
+      RELEASE_TAG: tmo-le-reference-v0.1.0
+    steps:
+      - name: Validate gate outputs
+        shell: bash
+        run: |
+          [[ "$CANDIDATE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$CANDIDATE_SHA256" =~ ^[0-9a-f]{64}$ ]]
+
+      - name: Check out only the verified reference input
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CANDIDATE_COMMIT }}
+          path: .tmo-le-candidate
+          sparse-checkout: release-inputs
+          persist-credentials: false
+
+      - name: Verify the release asset and prepare its checksum
+        shell: bash
+        working-directory: .tmo-le-candidate/release-inputs
+        run: |
+          printf '%s  %s\n' "$CANDIDATE_SHA256" TMO-LE-v0.1.0-CANDIDATE.zip \
+            > TMO-LE-v0.1.0-CANDIDATE.zip.sha256
+          sha256sum --check --strict TMO-LE-v0.1.0-CANDIDATE.zip.sha256
+
+      - name: Publish the reference-only GitHub prerelease
+        shell: bash
+        working-directory: .tmo-le-candidate/release-inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          matches="$(gh api "repos/$GH_REPO/git/matching-refs/tags/$RELEASE_TAG" \
+            --jq ".[] | select(.ref == \"refs/tags/$RELEASE_TAG\") | .object.sha")"
+          if [[ -z "$matches" ]]; then
+            gh api --method POST "repos/$GH_REPO/git/refs" \
+              -f ref="refs/tags/$RELEASE_TAG" -f sha="$GITHUB_SHA" --silent
+          elif [[ "$matches" != "$GITHUB_SHA" ]]; then
+            echo 'Release tag already points to a different commit. Refusing to publish.' >&2
+            exit 1
+          fi
+          gh release create "$RELEASE_TAG" \
+            TMO-LE-v0.1.0-CANDIDATE.zip TMO-LE-v0.1.0-CANDIDATE.zip.sha256 \
+            --repo "$GH_REPO" --verify-tag --prerelease --latest=false \
+            --title 'TMO-LE v0.1.0 reference conformance candidate' \
+            --notes 'Signed ontology reference candidate. Reference conformance only; operational and legal validity are not established. This is not an npm release.'
