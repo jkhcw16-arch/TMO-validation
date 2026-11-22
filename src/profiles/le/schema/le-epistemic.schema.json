@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tmo.validation/schema/le-epistemic.schema.json",
+  "title": "TMO LE Epistemic Layer",
+  "description": "Schema for epistemic assessment and withdrawal. Epistemic status represents evidentiary support, not truth.",
+  "oneOf": [
+    { "$ref": "#/$defs/assessment" },
+    { "$ref": "#/$defs/withdrawal" }
+  ],
+  "$defs": {
+    "activeStatus": {
+      "type": "string",
+      "enum": [
+        "UNASSESSED",
+        "SUPPORTED",
+        "PARTIALLY_SUPPORTED",
+        "CONTRADICTION",
+        "INCONCLUSIVE"
+      ]
+    },
+    "effectiveStatus": {
+      "type": "string",
+      "enum": [
+        "UNASSESSED",
+        "SUPPORTED",
+        "PARTIALLY_SUPPORTED",
+        "CONTRADICTION",
+        "INCONCLUSIVE",
+        "WITHDRAWN"
+      ]
+    },
+    "disposition": {
+      "type": "string",
+      "enum": ["ACTIVE", "WITHDRAWN"]
+    },
+    "idArray": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "supportingEvidenceIds",
+        "contradictingEvidenceIds",
+        "unresolvedEvidenceIds",
+        "provenanceIds"
+      ],
+      "properties": {
+        "supportingEvidenceIds": { "$ref": "#/$defs/idArray" },
+        "contradictingEvidenceIds": { "$ref": "#/$defs/idArray" },
+        "unresolvedEvidenceIds": { "$ref": "#/$defs/idArray" },
+        "provenanceIds": { "$ref": "#/$defs/idArray" }
+      }
+    },
+    "assessment": {
+      "title": "LE Epistemic Assessment",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resourceId",
+        "status",
+        "disposition",
+        "evidence",
+        "derivationId",
+        "auditRef"
+      ],
+      "properties": {
+        "resourceId": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/activeStatus" },
+        "disposition": { "$ref": "#/$defs/disposition" },
+        "evidence": { "$ref": "#/$defs/evidence" },
+        "derivationId": { "type": "string", "minLength": 1 },
+        "auditRef": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["status"],
+            "properties": { "status": { "const": "UNASSESSED" } }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "properties": {
+                  "supportingEvidenceIds": { "maxItems": 0 },
+                  "contradictingEvidenceIds": { "maxItems": 0 },
+                  "unresolvedEvidenceIds": { "maxItems": 0 }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["status"],
+            "properties": { "status": { "const": "SUPPORTED" } }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "properties": {
+                  "supportingEvidenceIds": { "minItems": 1 },
+                  "contradictingEvidenceIds": { "maxItems": 0 },
+                  "provenanceIds": { "minItems": 1 }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["status"],
+            "properties": { "status": { "const": "PARTIALLY_SUPPORTED" } }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "required": ["supportingEvidenceIds"],
+                "properties": {
+                  "supportingEvidenceIds": { "minItems": 1 },
+                  "provenanceIds": { "minItems": 1 }
+                },
+                "anyOf": [
+                  { "properties": { "unresolvedEvidenceIds": { "minItems": 1 } } },
+                  { "properties": { "contradictingEvidenceIds": { "minItems": 1 } } }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["status"],
+            "properties": { "status": { "const": "CONTRADICTION" } }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "properties": {
+                  "supportingEvidenceIds": { "minItems": 1 },
+                  "contradictingEvidenceIds": { "minItems": 1 },
+                  "provenanceIds": { "minItems": 1 }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["status"],
+            "properties": { "status": { "const": "INCONCLUSIVE" } }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "anyOf": [
+                  { "properties": { "supportingEvidenceIds": { "minItems": 1 } } },
+                  { "properties": { "contradictingEvidenceIds": { "minItems": 1 } } },
+                  { "properties": { "unresolvedEvidenceIds": { "minItems": 1 } } }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "withdrawal": {
+      "title": "LE Epistemic Withdrawal",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resourceId",
+        "previousStatus",
+        "status",
+        "reason",
+        "derivationId",
+        "auditRef",
+        "withdrawnAt"
+      ],
+      "properties": {
+        "resourceId": { "type": "string", "minLength": 1 },
+        "previousStatus": { "$ref": "#/$defs/activeStatus" },
+        "status": { "const": "WITHDRAWN" },
+        "reason": { "type": "string", "minLength": 1 },
+        "derivationId": { "type": "string", "minLength": 1 },
+        "auditRef": { "type": "string", "minLength": 1 },
+        "withdrawnAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}
