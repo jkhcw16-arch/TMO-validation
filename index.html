@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07111f">
-  <meta name="description" content="A public entry point for TMO validation artifacts, TMO-LE evidence semantics, provenance-aware inference, traceability, diagnostics, and PTM answer-accuracy evaluation.">
+  <meta name="description" content="A public entry point for TMO validation artifacts, TMO-LE evidence semantics, TMO-CA constitutional analysis, provenance-aware inference, traceability, diagnostics, and PTM answer-accuracy evaluation.">
   <title>TMO Validation</title>
+
   <style>
     :root {
       color-scheme: dark;
@@ -24,18 +25,38 @@
       text-rendering: optimizeLegibility;
     }
 
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
     body {
       margin: 0;
       min-width: 320px;
-      background: radial-gradient(circle at 80% 0, #123152 0, transparent 35%), var(--bg);
+      background:
+        radial-gradient(circle at 80% 0, #123152 0, transparent 35%),
+        var(--bg);
       color: var(--text);
       font-size: 16px;
       line-height: 1.6;
     }
-    a { color: var(--accent); }
-    a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+    a {
+      color: var(--accent);
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
     .skip-link {
       position: absolute;
       top: 8px;
@@ -47,7 +68,10 @@
       background: var(--card);
       color: var(--text);
     }
-    .skip-link:focus { transform: translateY(0); }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
 
     .navbar {
       position: sticky;
@@ -58,6 +82,7 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
+
     .nav-inner {
       width: min(1080px, 92%);
       min-height: 64px;
@@ -67,13 +92,43 @@
       justify-content: space-between;
       gap: 22px;
     }
-    .brand { color: var(--text); text-decoration: none; font-weight: 800; letter-spacing: .04em; white-space: nowrap; }
-    .brand span { color: var(--green); }
-    .nav-links { display: flex; align-items: center; gap: 18px; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: .92rem; font-weight: 600; }
-    .nav-links a:hover, .nav-links a:focus-visible { color: var(--accent); }
-    .github-button { padding: 8px 14px; border: 1px solid var(--line); border-radius: 10px; }
-    .github-button:hover, .github-button:focus-visible { border-color: var(--accent); }
+
+    .brand {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+
+    .brand span {
+      color: var(--green);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .92rem;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--accent);
+    }
+
+    .github-button {
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
     .menu-button {
       display: none;
       appearance: none;
@@ -87,24 +142,71 @@
       cursor: pointer;
     }
 
-    main { width: min(1080px, 92%); margin: auto; padding: 72px 0; }
-    section[id] { scroll-margin-top: 88px; }
-    .eyebrow { color: var(--green); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-    h1 { margin: .25em 0; font-size: clamp(2.7rem, 8vw, 5.8rem); line-height: .98; letter-spacing: -.045em; }
-    .lead { max-width: 780px; color: var(--muted); font-size: 1.2rem; }
-    .section-heading { margin-top: 72px; }
-    .section-heading h2 { margin: 8px 0 10px; font-size: 1.9rem; line-height: 1.2; }
-    .section-heading p { max-width: 800px; margin: 0; color: var(--muted); }
+    main {
+      width: min(1080px, 92%);
+      margin: auto;
+      padding: 72px 0;
+    }
 
-    .overview, .score {
+    section[id] {
+      scroll-margin-top: 88px;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: .25em 0;
+      font-size: clamp(2.7rem, 8vw, 5.8rem);
+      line-height: .98;
+      letter-spacing: -.045em;
+    }
+
+    .lead {
+      max-width: 780px;
+      color: var(--muted);
+      font-size: 1.2rem;
+    }
+
+    .section-heading {
+      margin-top: 72px;
+    }
+
+    .section-heading h2 {
+      margin: 8px 0 10px;
+      font-size: 1.9rem;
+      line-height: 1.2;
+    }
+
+    .section-heading p {
+      max-width: 800px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .overview,
+    .score {
       margin-top: 72px;
       padding: 30px;
       border: 1px solid var(--line);
       border-radius: 18px;
       background: rgba(14, 27, 44, .78);
     }
-    .overview h2 { margin: 8px 0 12px; font-size: 1.8rem; }
-    .overview p { max-width: 850px; color: var(--muted); }
+
+    .overview h2 {
+      margin: 8px 0 12px;
+      font-size: 1.8rem;
+    }
+
+    .overview p {
+      max-width: 850px;
+      color: var(--muted);
+    }
+
     .architecture-flow {
       margin-top: 24px;
       padding: 18px 20px;
@@ -112,11 +214,23 @@
       border-radius: 8px;
       background: var(--card-soft);
       color: var(--muted);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Consolas,
+        monospace;
       overflow-wrap: anywhere;
     }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); gap: 16px; margin-top: 24px; }
+    .grid {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
     .card {
       display: block;
       padding: 22px;
@@ -125,181 +239,719 @@
       background: var(--card);
       color: inherit;
       text-decoration: none;
-      transition: border-color .2s ease, transform .2s ease;
+      transition:
+        border-color .2s ease,
+        transform .2s ease;
     }
-    .card:hover, .card:focus-visible { border-color: var(--accent); transform: translateY(-2px); }
-    .card h3 { margin: 0 0 8px; font-size: 1.05rem; }
-    .card p { margin: 0; color: var(--muted); }
-    .rule-number { display: inline-block; margin-bottom: 9px; color: var(--green); font-size: .82rem; font-weight: 800; letter-spacing: .08em; }
 
-    .status-group { margin-top: 20px; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--card-soft); }
-    .status-group h3 { margin: 0 0 14px; }
-    .status-list { display: flex; flex-wrap: wrap; gap: 9px; }
-    .status { padding: 7px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .88rem; }
-    .status.good { color: var(--green); }
-    .status.warning { color: var(--amber); }
-    .status.danger { color: var(--red); }
+    .card:hover,
+    .card:focus-visible {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
 
-    .score { margin-top: 24px; padding: 26px; background: var(--card); }
-    .score-equation { margin: 18px 0; color: var(--accent); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 1.03rem; overflow-wrap: anywhere; }
-    .score-signs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-    .score-sign { padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--card-soft); }
-    .score-sign strong { display: block; color: var(--text); }
-    .score-sign span { color: var(--muted); }
-    .precedence { display: grid; gap: 8px; margin-top: 24px; }
-    .precedence div { padding: 13px 16px; border-left: 3px solid var(--accent); background: var(--card-soft); color: var(--muted); }
-    footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .rule-number {
+      display: inline-block;
+      margin-bottom: 9px;
+      color: var(--green);
+      font-size: .82rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+
+    .status-group {
+      margin-top: 20px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--card-soft);
+    }
+
+    .status-group h3 {
+      margin: 0 0 14px;
+    }
+
+    .status-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .status {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .status.good {
+      color: var(--green);
+    }
+
+    .status.warning {
+      color: var(--amber);
+    }
+
+    .status.danger {
+      color: var(--red);
+    }
+
+    .precedence {
+      display: grid;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .precedence div {
+      padding: 13px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--card-soft);
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 72px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .9rem;
+    }
 
     @media (max-width: 760px) {
-      html { scroll-padding-top: 76px; }
-      .nav-inner { min-height: 60px; flex-wrap: wrap; gap: 0; padding: 10px 0; }
-      .menu-button { display: block; }
-      .nav-links { display: none; width: 100%; flex-direction: column; align-items: stretch; gap: 4px; padding: 12px 0 6px; }
-      .nav-links.open { display: flex; }
-      .nav-links a { display: block; padding: 11px 8px; border-radius: 8px; }
-      .nav-links a:hover, .nav-links a:focus-visible { background: var(--card); }
-      .github-button { border: 0; }
-      main { padding-top: 52px; }
-      h1 { font-size: clamp(2.7rem, 15vw, 4.5rem); }
-      .lead { font-size: 1.08rem; }
-      .overview, .section-heading { margin-top: 52px; }
-      .overview { padding: 24px 20px; }
-      .score-signs { grid-template-columns: 1fr; }
+      html {
+        scroll-padding-top: 76px;
+      }
+
+      .nav-inner {
+        min-height: 60px;
+        flex-wrap: wrap;
+        gap: 0;
+        padding: 10px 0;
+      }
+
+      .menu-button {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        padding: 12px 0 6px;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 11px 8px;
+        border-radius: 8px;
+      }
+
+      .nav-links a:hover,
+      .nav-links a:focus-visible {
+        background: var(--card);
+      }
+
+      .github-button {
+        border: 0;
+      }
+
+      main {
+        padding-top: 52px;
+      }
+
+      h1 {
+        font-size: clamp(2.7rem, 15vw, 4.5rem);
+      }
+
+      .lead {
+        font-size: 1.08rem;
+      }
+
+      .overview,
+      .section-heading {
+        margin-top: 52px;
+      }
+
+      .overview {
+        padding: 24px 20px;
+      }
     }
+
     @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { transition-duration: .01ms !important; }
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: .01ms !important;
+      }
     }
   </style>
 </head>
+
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+
   <header class="navbar">
     <nav class="nav-inner" aria-label="Main navigation">
-      <a class="brand" href="#home">TMO <span>Validation</span></a>
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+      <a class="brand" href="#home">
+        TMO <span>Validation</span>
+      </a>
+
+      <button
+        class="menu-button"
+        type="button"
+        aria-expanded="false"
+        aria-controls="nav-links">
+        Menu
+      </button>
+
       <div class="nav-links" id="nav-links">
         <a href="#home">Home</a>
-        <a href="#invariants">Invariants</a>
+        <a href="#invariants">LE</a>
         <a href="#epistemic">Epistemic</a>
-        <a href="#evidence">Evidence</a>
+        <a href="#constitutional">CA</a>
         <a href="#resources">Resources</a>
         <a href="#traceability">Traceability</a>
-        <a class="github-button" href="https://github.com/jkhcw16-arch/TMO-validation">GitHub</a>
+        <a
+          class="github-button"
+          href="https://github.com/jkhcw16-arch/TMO-validation">
+          GitHub
+        </a>
       </div>
     </nav>
   </header>
 
   <main id="main">
+
     <section id="home" aria-labelledby="page-title">
       <p class="eyebrow">TMO Validation</p>
-      <h1 id="page-title">Validation,<br>made inspectable.</h1>
-      <p class="lead">A public entry point for TMO validation artifacts, TMO-LE evidence semantics, provenance-aware inference, epistemic assessment, traceability, diagnostics, and PTM answer-accuracy evaluation.</p>
+
+      <h1 id="page-title">
+        Validation,<br>
+        made inspectable.
+      </h1>
+
+      <p class="lead">
+        A public entry point for TMO validation artifacts,
+        TMO-LE evidence semantics, TMO-CA constitutional analysis,
+        provenance-aware inference, epistemic assessment,
+        traceability, diagnostics, and PTM answer-accuracy evaluation.
+      </p>
     </section>
 
     <section class="overview" aria-labelledby="architecture-title">
       <p class="eyebrow">Current architecture</p>
-      <h2 id="architecture-title">TMO-LE evidence validation</h2>
-      <p>TMO-LE separates preserved resources, assertions, evidence, provenance, derivations, qualified dimensions, epistemic assessment, conflict resolution, calibrated evidence scoring, thresholds, escalation, and audit history.</p>
-      <div class="architecture-flow">Preserved resource → provenance → evidence qualification → qualified dimensions → proposition evidence score → epistemic assessment → threshold / escalation → audit</div>
+
+      <h2 id="architecture-title">
+        Evidence to constitutional analysis
+      </h2>
+
+      <p>
+        TMO-LE preserves and qualifies evidence.
+        TMO-CA applies constitutional text, authority,
+        precedent, doctrine, standards, and qualified
+        factual predicates without allowing evidence scores
+        to substitute for legal analysis.
+      </p>
+
+      <div class="architecture-flow">
+        Preserved resource
+        → provenance
+        → LE qualification
+        → epistemic assessment
+        → CA doctrine + authority
+        → CA application
+        → CA conclusion
+        → review / audit
+      </div>
     </section>
 
     <section id="invariants" aria-labelledby="invariants-title">
       <div class="section-heading">
-        <p class="eyebrow">Foundation</p>
-        <h2 id="invariants-title">TMO-LE foundational invariants</h2>
-        <p>Interpretation may reduce uncertainty only when additional evidence justifies that reduction. Transformation alone cannot create knowledge.</p>
-      </div>
-      <div class="grid">
-        <article class="card"><span class="rule-number">LE-101</span><h3>Preservation before interpretation</h3><p>Preserve what was observed before deciding what the observation means.</p></article>
-        <article class="card"><span class="rule-number">LE-102</span><h3>Assertion is not fact</h3><p>Recording a proposition does not establish that proposition as fact.</p></article>
-        <article class="card"><span class="rule-number">LE-103</span><h3>Unknown is not zero or pass</h3><p>Missing or unresolved information remains explicit rather than becoming a default value.</p></article>
-        <article class="card"><span class="rule-number">LE-104</span><h3>Independence is origin-based</h3><p>Multiple records derived from one origin do not become independent corroboration.</p></article>
-        <article class="card"><span class="rule-number">LE-105</span><h3>Finding strength is provenance-bounded</h3><p>A finding cannot become stronger than the evidentiary provenance supporting it.</p></article>
-        <article class="card"><span class="rule-number">LE-106</span><h3>Temporal precision cannot be manufactured</h3><p>Derived temporal claims cannot become more precise without additional evidence.</p></article>
-        <article class="card"><span class="rule-number">LE-107</span><h3>Relations remain separate</h3><p>Association, attribution, coordination, causation, and authorization require separate evidentiary support.</p></article>
-      </div>
-    </section>
+        <p class="eyebrow">TMO-LE foundation</p>
 
-    <section class="section-heading" aria-labelledby="resolution-title">
-      <p class="eyebrow">Identity and role</p>
-      <h2 id="resolution-title">Resolution model</h2>
-      <p>Identity and role are evaluated independently. Resolved identity does not automatically resolve role, agency, attribution, causation, or authorization.</p>
-      <div class="status-group"><h3>Resolution states</h3><div class="status-list"><span class="status good">RESOLVED</span><span class="status">PROBABLE MATCH</span><span class="status">POSSIBLE MATCH</span><span class="status warning">UNRESOLVED</span><span class="status danger">CONFLICT</span></div></div>
+        <h2 id="invariants-title">
+          Evidence invariants
+        </h2>
+
+        <p>
+          Interpretation may reduce uncertainty only when
+          additional evidence justifies that reduction.
+        </p>
+      </div>
+
+      <div class="grid">
+
+        <article class="card">
+          <span class="rule-number">LE-101</span>
+          <h3>Preservation before interpretation</h3>
+          <p>
+            Preserve what was observed before deciding
+            what it means.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="rule-number">LE-102</span>
+          <h3>Assertion is not fact</h3>
+          <p>
+            Recording a proposition does not establish it
+            as fact.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="rule-number">LE-103</span>
+          <h3>Unknown is not zero or pass</h3>
+          <p>
+            Missing or unresolved information remains explicit.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="rule-number">LE-104</span>
+          <h3>Independence is origin-based</h3>
+          <p>
+            Duplicate records do not become independent
+            corroboration.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="rule-number">LE-105</span>
+          <h3>Strength is provenance-bounded</h3>
+          <p>
+            A finding cannot exceed the support of its
+            provenance.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="rule-number">LE-106</span>
+          <h3>No manufactured temporal precision</h3>
+          <p>
+            Derived time claims require evidentiary support.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="rule-number">LE-107</span>
+          <h3>Relations remain separate</h3>
+          <p>
+            Identity, role, attribution, causation,
+            and authorization require separate support.
+          </p>
+        </article>
+
+      </div>
     </section>
 
     <section id="epistemic" aria-labelledby="epistemic-title">
       <div class="section-heading">
         <p class="eyebrow">Epistemic layer</p>
-        <h2 id="epistemic-title">Evidentiary status without truth inflation</h2>
-        <p>Epistemic status describes what the available evidence presently supports. It does not transform an assertion into an unqualified fact.</p>
+
+        <h2 id="epistemic-title">
+          Evidentiary status without truth inflation
+        </h2>
+
+        <p>
+          Epistemic status records what available evidence
+          supports, not an unqualified declaration of truth.
+        </p>
       </div>
-      <div class="status-group"><h3>Epistemic states</h3><div class="status-list"><span class="status">UNASSESSED</span><span class="status good">SUPPORTED</span><span class="status">PARTIALLY SUPPORTED</span><span class="status danger">CONTRADICTION</span><span class="status warning">INCONCLUSIVE</span><span class="status">WITHDRAWN</span></div></div>
-      <div class="status-group"><h3>Qualified dimensions</h3><p>Verification applies only to the named dimension. For example, verified identity does not verify role or authorization.</p><div class="status-list"><span class="status">UNVERIFIED</span><span class="status">PARTIALLY VERIFIED</span><span class="status good">VERIFIED</span><span class="status danger">FAILED</span><span class="status warning">INDETERMINATE</span></div></div>
+
+      <div class="status-group">
+        <h3>Epistemic states</h3>
+
+        <div class="status-list">
+          <span class="status">UNASSESSED</span>
+          <span class="status good">SUPPORTED</span>
+          <span class="status">PARTIALLY SUPPORTED</span>
+          <span class="status danger">CONTRADICTION</span>
+          <span class="status warning">INCONCLUSIVE</span>
+          <span class="status">WITHDRAWN</span>
+        </div>
+      </div>
+
+      <div class="status-group">
+        <h3>Qualified dimensions</h3>
+
+        <div class="status-list">
+          <span class="status">UNVERIFIED</span>
+          <span class="status">PARTIALLY VERIFIED</span>
+          <span class="status good">VERIFIED</span>
+          <span class="status danger">FAILED</span>
+          <span class="status warning">INDETERMINATE</span>
+        </div>
+      </div>
     </section>
 
     <section id="evidence" aria-labelledby="evidence-title">
       <div class="section-heading">
         <p class="eyebrow">Evidence weighting</p>
-        <h2 id="evidence-title">Proposition-specific evidence assessment</h2>
-        <p>Evidence weight belongs to the relationship between an evidence item and a proposition. Weight does not establish truth and cannot exceed provenance support.</p>
-      </div>
-      <div class="grid">
-        <article class="card"><h3>Relevance</h3><p>How directly the evidence bears on the proposition.</p></article>
-        <article class="card"><h3>Context</h3><p>Whether the evidence applies within the proposition's relevant circumstances.</p></article>
-        <article class="card"><h3>Specific source identity</h3><p>Whether the particular source is sufficiently identified for the use.</p></article>
-        <article class="card"><h3>Authenticity</h3><p>Whether the item is adequately supported as what it purports to be.</p></article>
-        <article class="card"><h3>Independence</h3><p>Whether the evidence represents an origin independent of other evidence being counted.</p></article>
+
+        <h2 id="evidence-title">
+          Proposition-specific evidence assessment
+        </h2>
+
+        <p>
+          Weight belongs to the relationship between an
+          evidence item and a proposition. Evidence weight
+          does not establish truth or constitutionality.
+        </p>
       </div>
 
-      <div class="score">
-        <p class="eyebrow">Scoring principles</p>
-        <h2>Evidence informs assessment; it does not replace it</h2>
-        <p class="score-equation">Evidence assessment → proposition support → epistemic status → decision threshold</p>
-        <div class="score-signs">
-          <div class="score-sign"><strong>Evidence weight</strong><span>Applies to a specific evidence–proposition relationship.</span></div>
-          <div class="score-sign"><strong>Provenance bound</strong><span>Strength cannot exceed the support provided by the source history.</span></div>
-          <div class="score-sign"><strong>Explicit uncertainty</strong><span>Unknown, conflicting, or incomplete information stays visible.</span></div>
-        </div>
-      </div>
-      <div class="precedence" aria-label="Assessment principles">
-        <div>Preserve source material before deriving or interpreting it.</div>
-        <div>Qualify evidence and provenance before assessing a proposition.</div>
-        <div>Keep identity, role, attribution, causation, and authorization distinct.</div>
-        <div>Record uncertainty, conflicts, thresholds, and escalation in the audit trail.</div>
+      <div class="grid">
+
+        <article class="card">
+          <h3>Relevance</h3>
+          <p>
+            How directly evidence bears on a proposition.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Context</h3>
+          <p>
+            Applicability to the relevant circumstances.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Source identity</h3>
+          <p>
+            Whether the particular source is sufficiently
+            identified.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Authenticity</h3>
+          <p>
+            Whether the item is supported as what it
+            purports to be.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Independence</h3>
+          <p>
+            Whether the evidence has an independent origin.
+          </p>
+        </article>
+
       </div>
     </section>
 
+    <section id="constitutional" aria-labelledby="ca-title">
+
+      <div class="section-heading">
+        <p class="eyebrow">
+          TMO-CA Constitutional Analysis
+        </p>
+
+        <h2 id="ca-title">
+          Legal analysis stays separate from evidentiary support
+        </h2>
+
+        <p>
+          TMO-CA consumes qualified TMO-LE predicates while
+          keeping constitutional text, authority, precedent,
+          doctrine, application, counterargument, and conclusion
+          independently addressable.
+        </p>
+      </div>
+
+      <div class="architecture-flow">
+        Qualified LE facts
+        + constitutional provision
+        + authority / precedent
+        + doctrine / standard
+        → CAApplication
+        → CAConclusion
+        → review disposition
+      </div>
+
+      <div class="grid">
+
+        <article class="card">
+          <h3>Constitutional text</h3>
+          <p>
+            Text remains distinct from judicial, historical,
+            doctrinal, and analytical interpretations.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Authority</h3>
+          <p>
+            Binding status, current treatment, jurisdiction,
+            provenance, and evidence weight remain distinct.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Precedent</h3>
+          <p>
+            Holding, rationale, facts, scope,
+            proposition-specific use, and later treatment
+            remain separately traceable.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Doctrine</h3>
+          <p>
+            Elements and exceptions are represented and
+            evaluated separately.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Application</h3>
+          <p>
+            Connects qualified factual predicates to explicit
+            doctrine and legal authority.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Conclusion</h3>
+          <p>
+            Conclusions require ready applications and legal
+            authority; adverse authority remains visible.
+          </p>
+        </article>
+
+      </div>
+
+      <div class="status-group">
+        <h3>CA review dispositions</h3>
+
+        <div class="status-list">
+          <span class="status good">READY FOR REVIEW</span>
+          <span class="status warning">CONTESTED REVIEW</span>
+          <span class="status">NO MERITS DETERMINATION</span>
+          <span class="status warning">INDETERMINATE</span>
+          <span class="status danger">INVALID</span>
+        </div>
+      </div>
+
+      <div class="precedence">
+        <div>
+          Evidence score ≠ constitutionality.
+        </div>
+
+        <div>
+          VALID factual representation ≠ constitutional conclusion.
+        </div>
+
+        <div>
+          READY application ≠ merits conclusion.
+        </div>
+
+        <div>
+          READY FOR REVIEW ≠ judicial determination.
+        </div>
+
+        <div>
+          Adverse authority and uncertainty remain represented.
+        </div>
+      </div>
+
+    </section>
+
     <section id="resources" aria-labelledby="resources-title">
+
       <div class="section-heading">
         <p class="eyebrow">Explore the project</p>
-        <h2 id="resources-title">Resources</h2>
-        <p>Project documentation and evaluation materials are available in the repository.</p>
+
+        <h2 id="resources-title">
+          Resources
+        </h2>
+
+        <p>
+          TMO-LE and TMO-CA source modules, documentation,
+          validation logic, and tests.
+        </p>
       </div>
+
       <div class="grid">
-        <a class="card" href="README.md"><h3>Project README</h3><p>Repository overview, setup, and project notes.</p></a>
-        <a class="card" href="INTEGRATION.md"><h3>Integration guide</h3><p>Integration information and implementation guidance.</p></a>
-        <a class="card" href="TMO-LE-v0.1.0-Final-Release-Report.docx"><h3>TMO-LE release report</h3><p>Download the TMO-LE v0.1.0 final release report.</p></a>
-        <a class="card" href="PTM-Answer-Accuracy-Improvement-v1.2.1.md"><h3>PTM answer accuracy</h3><p>Read the answer-accuracy improvement specification.</p></a>
+
+        <a class="card" href="README.md">
+          <h3>Project README</h3>
+          <p>Repository overview and setup.</p>
+        </a>
+
+        <a class="card" href="src/profiles/ca/README.md">
+          <h3>TMO-CA README</h3>
+          <p>
+            Constitutional Analysis architecture and
+            CA-101 through CA-110.
+          </p>
+        </a>
+
+        <a
+          class="card"
+          href="src/profiles/ca/ca-resource-registry.ts">
+          <h3>CA resource registry</h3>
+          <p>
+            Canonical CA resources, layers, invariants,
+            and LE bridge boundaries.
+          </p>
+        </a>
+
+        <a
+          class="card"
+          href="src/profiles/ca/ca-validation.ts">
+          <h3>CA validation</h3>
+          <p>
+            Cross-resource validation rules for
+            constitutional analysis.
+          </p>
+        </a>
+
+        <a
+          class="card"
+          href="src/profiles/ca/ca-authority.ts">
+          <h3>CA authority</h3>
+          <p>
+            Authority classification and structural validation.
+          </p>
+        </a>
+
+        <a
+          class="card"
+          href="src/profiles/ca/ca-precedent.ts">
+          <h3>CA precedent</h3>
+          <p>
+            Holding, rationale, scope, claim linkage,
+            and later-treatment lineage.
+          </p>
+        </a>
+
+        <a
+          class="card"
+          href="src/profiles/ca/ca-doctrine.ts">
+          <h3>CA doctrine</h3>
+          <p>
+            Separate doctrine elements, exceptions,
+            findings, and evaluation.
+          </p>
+        </a>
+
+        <a
+          class="card"
+          href="src/profiles/ca/ca-application.ts">
+          <h3>CA application</h3>
+          <p>
+            The explicit LE-to-CA legal application boundary.
+          </p>
+        </a>
+
+        <a
+          class="card"
+          href="src/profiles/ca/ca-conclusion.ts">
+          <h3>CA conclusion</h3>
+          <p>
+            Support-bounded conclusions and review dispositions.
+          </p>
+        </a>
+
+        <a
+          class="card"
+          href="TMO-LE-v0.1.0-Final-Release-Report.docx">
+          <h3>TMO-LE release report</h3>
+          <p>
+            Download the final release report.
+          </p>
+        </a>
+
+        <a
+          class="card"
+          href="PTM-Answer-Accuracy-Improvement-v1.2.1.md">
+          <h3>PTM answer accuracy</h3>
+          <p>
+            Read the answer-accuracy improvement specification.
+          </p>
+        </a>
+
       </div>
     </section>
 
     <section id="traceability" aria-labelledby="traceability-title">
+
       <div class="section-heading">
         <p class="eyebrow">Evidence and audit</p>
-        <h2 id="traceability-title">Traceability</h2>
-        <p>Traceability artifacts connect requirements, validation results, evidence, and project outputs.</p>
+
+        <h2 id="traceability-title">
+          Traceability
+        </h2>
+
+        <p>
+          Traceability connects requirements, validation
+          results, evidence, legal analysis, and project outputs.
+        </p>
       </div>
+
       <div class="grid">
-        <a class="card" href="PTM_TMO_Traceability_With_Validation_Report.xlsx"><h3>Traceability and validation report</h3><p>Open the project traceability matrix and validation report.</p></a>
-        <a class="card" href="traceability.txt"><h3>Traceability text</h3><p>View the text-format traceability artifact.</p></a>
-        <a class="card" href="ptm-answer-accuracy/"><h3>PTM answer-accuracy materials</h3><p>Browse the answer-accuracy project materials.</p></a>
+
+        <a
+          class="card"
+          href="PTM_TMO_Traceability_With_Validation_Report.xlsx">
+          <h3>Traceability and validation report</h3>
+          <p>
+            Open the project traceability matrix
+            and validation report.
+          </p>
+        </a>
+
+        <a class="card" href="traceability.txt">
+          <h3>Traceability text</h3>
+          <p>
+            View the text-format traceability artifact.
+          </p>
+        </a>
+
+        <a class="card" href="ptm-answer-accuracy/">
+          <h3>PTM answer-accuracy materials</h3>
+          <p>
+            Browse answer-accuracy project materials.
+          </p>
+        </a>
+
       </div>
     </section>
 
     <footer>
-      <p>TMO Validation · <a href="https://github.com/jkhcw16-arch/TMO-validation">View the repository on GitHub</a></p>
+      <p>
+        TMO Validation ·
+        <a href="https://github.com/jkhcw16-arch/TMO-validation">
+          View the repository on GitHub
+        </a>
+      </p>
     </footer>
+
   </main>
 
   <script>
@@ -307,17 +959,31 @@
     const navigation = document.querySelector('#nav-links');
 
     menuButton.addEventListener('click', () => {
-      const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
-      menuButton.setAttribute('aria-expanded', String(!isOpen));
-      navigation.classList.toggle('open', !isOpen);
+      const isOpen =
+        menuButton.getAttribute('aria-expanded') === 'true';
+
+      menuButton.setAttribute(
+        'aria-expanded',
+        String(!isOpen)
+      );
+
+      navigation.classList.toggle(
+        'open',
+        !isOpen
+      );
     });
 
     navigation.addEventListener('click', (event) => {
       if (event.target.closest('a')) {
-        menuButton.setAttribute('aria-expanded', 'false');
+        menuButton.setAttribute(
+          'aria-expanded',
+          'false'
+        );
+
         navigation.classList.remove('open');
       }
     });
   </script>
+
 </body>
 </html>
