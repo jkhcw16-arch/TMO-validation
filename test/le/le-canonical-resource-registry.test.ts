@@ -904,3 +904,369 @@ describe(
     it(
       "gives every resource a layer, description, and invariant set",
       () => {
+describe(
+  "Epistemic Layer registry integration",
+  () => {
+
+    it(
+      "registers LEEpistemicAssessment",
+      () => {
+
+        expect(
+          isLECanonicalResourceType(
+            "LEEpistemicAssessment"
+          )
+        ).toBe(true);
+
+        const descriptor =
+          getLECanonicalResourceDescriptor(
+            "LEEpistemicAssessment"
+          );
+
+        expect(
+          descriptor.type
+        ).toBe(
+          "LEEpistemicAssessment"
+        );
+
+        expect(
+          descriptor.layer
+        ).toBe(
+          "EVIDENTIARY"
+        );
+      }
+    );
+
+
+    it(
+      "registers LEEpistemicWithdrawal",
+      () => {
+
+        expect(
+          isLECanonicalResourceType(
+            "LEEpistemicWithdrawal"
+          )
+        ).toBe(true);
+
+        const descriptor =
+          getLECanonicalResourceDescriptor(
+            "LEEpistemicWithdrawal"
+          );
+
+        expect(
+          descriptor.type
+        ).toBe(
+          "LEEpistemicWithdrawal"
+        );
+
+        expect(
+          descriptor.layer
+        ).toBe(
+          "EVIDENTIARY"
+        );
+      }
+    );
+
+
+    it(
+      "keeps epistemic assessment separate from withdrawal",
+      () => {
+
+        const assessment =
+          getLECanonicalResourceDescriptor(
+            "LEEpistemicAssessment"
+          );
+
+        const withdrawal =
+          getLECanonicalResourceDescriptor(
+            "LEEpistemicWithdrawal"
+          );
+
+        expect(
+          assessment.type
+        ).not.toBe(
+          withdrawal.type
+        );
+
+        expect(
+          withdrawal.mayReference
+        ).toContain(
+          "LEEpistemicAssessment"
+        );
+      }
+    );
+
+
+    it(
+      "places both epistemic resources in the evidentiary layer",
+      () => {
+
+        const resources =
+          getLEResourceTypesByLayer(
+            "EVIDENTIARY"
+          );
+
+        expect(
+          resources
+        ).toContain(
+          "LEEpistemicAssessment"
+        );
+
+        expect(
+          resources
+        ).toContain(
+          "LEEpistemicWithdrawal"
+        );
+      }
+    );
+
+
+    it(
+      "applies all foundational invariants to epistemic assessment",
+      () => {
+
+        const descriptor =
+          getLECanonicalResourceDescriptor(
+            "LEEpistemicAssessment"
+          );
+
+        expect(
+          new Set(
+            descriptor.invariants
+          )
+        ).toEqual(
+          new Set([
+            "LE-101",
+            "LE-102",
+            "LE-103",
+            "LE-104",
+            "LE-105",
+            "LE-106",
+            "LE-107",
+          ])
+        );
+      }
+    );
+
+
+    it(
+      "requires preservation semantics for epistemic withdrawal",
+      () => {
+
+        const descriptor =
+          getLECanonicalResourceDescriptor(
+            "LEEpistemicWithdrawal"
+          );
+
+        expect(
+          descriptor.invariants
+        ).toContain(
+          "LE-101"
+        );
+
+        expect(
+          descriptor.invariants
+        ).toContain(
+          "LE-102"
+        );
+
+        expect(
+          descriptor.invariants
+        ).toContain(
+          "LE-103"
+        );
+
+        expect(
+          descriptor.invariants
+        ).toContain(
+          "LE-105"
+        );
+
+        expect(
+          descriptor.invariants
+        ).toContain(
+          "LE-106"
+        );
+      }
+    );
+
+
+    it(
+      "allows epistemic assessment to trace evidence and provenance",
+      () => {
+
+        const descriptor =
+          getLECanonicalResourceDescriptor(
+            "LEEpistemicAssessment"
+          );
+
+        expect(
+          descriptor.mayReference
+        ).toContain(
+          "LEEvidenceItem"
+        );
+
+        expect(
+          descriptor.mayReference
+        ).toContain(
+          "LEProvenanceRecord"
+        );
+
+        expect(
+          descriptor.mayReference
+        ).toContain(
+          "LEAssertion"
+        );
+      }
+    );
+
+
+    it(
+      "allows epistemic assessment to preserve contradiction and corroboration",
+      () => {
+
+        const descriptor =
+          getLECanonicalResourceDescriptor(
+            "LEEpistemicAssessment"
+          );
+
+        expect(
+          descriptor.mayReference
+        ).toContain(
+          "LEContradiction"
+        );
+
+        expect(
+          descriptor.mayReference
+        ).toContain(
+          "LECorroboration"
+        );
+      }
+    );
+
+
+    it(
+      "requires withdrawal to reference assessment rather than replace it",
+      () => {
+
+        const descriptor =
+          getLECanonicalResourceDescriptor(
+            "LEEpistemicWithdrawal"
+          );
+
+        expect(
+          descriptor.mayReference
+        ).toContain(
+          "LEEpistemicAssessment"
+        );
+
+        expect(
+          descriptor.mayReference
+        ).toContain(
+          "LEDerivation"
+        );
+
+        expect(
+          descriptor.mayReference
+        ).toContain(
+          "LEAuditFinding"
+        );
+      }
+    );
+
+
+    it(
+      "allows derivations to reference epistemic resources",
+      () => {
+
+        const descriptor =
+          getLECanonicalResourceDescriptor(
+            "LEDerivation"
+          );
+
+        expect(
+          descriptor.mayReference
+        ).toContain(
+          "LEEpistemicAssessment"
+        );
+
+        expect(
+          descriptor.mayReference
+        ).toContain(
+          "LEEpistemicWithdrawal"
+        );
+      }
+    );
+
+
+    it(
+      "includes epistemic assessment under LE-102",
+      () => {
+
+        expect(
+          getLEResourceTypesForInvariant(
+            "LE-102"
+          )
+        ).toContain(
+          "LEEpistemicAssessment"
+        );
+      }
+    );
+
+
+    it(
+      "includes epistemic assessment under LE-103",
+      () => {
+
+        expect(
+          getLEResourceTypesForInvariant(
+            "LE-103"
+          )
+        ).toContain(
+          "LEEpistemicAssessment"
+        );
+      }
+    );
+
+
+    it(
+      "includes epistemic assessment under provenance invariants",
+      () => {
+
+        expect(
+          getLEResourceTypesForInvariant(
+            "LE-104"
+          )
+        ).toContain(
+          "LEEpistemicAssessment"
+        );
+
+        expect(
+          getLEResourceTypesForInvariant(
+            "LE-105"
+          )
+        ).toContain(
+          "LEEpistemicAssessment"
+        );
+      }
+    );
+
+
+    it(
+      "still passes complete registry self-validation",
+      () => {
+
+        const result =
+          validateLECanonicalResourceRegistry();
+
+        expect(
+          result.valid
+        ).toBe(true);
+
+        expect(
+          result.issues
+        ).toEqual([]);
+      }
+    );
+  }
+);
