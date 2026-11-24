@@ -1,0 +1,26 @@
+import { describe, expect, it } from "vitest";
+import { evaluateEDAnalysis, type EDAnalysisContext, type EDAnalysisRecord } from "../../src/profiles/ed/ed-analysis.js";
+const context=():EDAnalysisContext=>({matterId:"matter-1",resourceIds:new Set(["item-1","item-2"]),sourceRecordIds:new Set(["source-1"]),derivationRefs:new Set(["derive-1"]),auditRefs:new Set(["audit-1"]),limitationIds:new Set(["limit-1"]),exceptionIds:new Set(["exception-1"]),findings:[{id:"finding-1",proposition:"Item contains responsive subject matter",status:"SUPPORTED",supportingResourceIds:["item-1"],contradictingResourceIds:[],limitationIds:[]}],authorizations:[{id:"auth-1",actorId:"analyst-1",matterId:"matter-1",action:"ANALYZE",resourceIds:["item-1"],state:"AUTHORIZED"}]});
+const valid=():EDAnalysisRecord=>({id:"analysis-1",matterId:"matter-1",lifecycleArea:"REVIEW",targetResourceIds:["item-1"],method:"HUMAN",performedBy:"analyst-1",performedAt:"2026-11-21T23:00:00Z",authorizationId:"auth-1",findingIds:["finding-1"],sourceRefs:["source-1"],derivationRef:"derive-1",auditRef:"audit-1",exceptionIds:[]});
+describe("TMO-ED continuous analysis",()=>{
+ it("returns ASSESSED for supported authorized analysis",()=>expect(evaluateEDAnalysis(valid(),context()).status).toBe("ASSESSED"));
+ it("requires target resources",()=>expect(evaluateEDAnalysis({...valid(),targetResourceIds:[]},context()).status).toBe("INVALID"));
+ it("rejects unknown targets",()=>expect(evaluateEDAnalysis({...valid(),targetResourceIds:["missing"]},context()).status).toBe("INVALID"));
+ it("requires ANALYZE authorization",()=>expect(evaluateEDAnalysis({...valid(),authorizationId:undefined},context()).status).toBe("INVALID"));
+ it("does not allow REVIEW authorization to substitute",()=>{const c=context();expect(evaluateEDAnalysis(valid(),{...c,authorizations:[{...c.authorizations[0]!,action:"REVIEW"}]}).status).toBe("INVALID")});
+ it("does not allow authorization to leak across targets",()=>{const c=context();expect(evaluateEDAnalysis({...valid(),targetResourceIds:["item-1","item-2"]},c).status).toBe("INVALID")});
+ it("preserves indeterminate authorization",()=>{const c=context();expect(evaluateEDAnalysis(valid(),{...c,authorizations:[{...c.authorizations[0]!,state:"INDETERMINATE"}]}).status).toBe("INDETERMINATE")});
+ it("requires technology method reference for generative AI",()=>expect(evaluateEDAnalysis({...valid(),method:"GENERATIVE_AI",methodRef:undefined},context()).status).toBe("INVALID"));
+ it("accepts generative AI when method identity is explicit",()=>expect(evaluateEDAnalysis({...valid(),method:"GENERATIVE_AI",methodRef:"model-policy-1"},context()).status).toBe("ASSESSED"));
+ it("requires addressable findings",()=>expect(evaluateEDAnalysis({...valid(),findingIds:["missing"]},context()).status).toBe("INVALID"));
+ it("requires support for a SUPPORTED finding",()=>{const c=context();const c2={...c,findings:[{...c.findings[0]!,supportingResourceIds:[]}]};expect(evaluateEDAnalysis(valid(),c2).status).toBe("INVALID")});
+ it("requires both sides for a CONTESTED finding",()=>{const c=context();const c2={...c,findings:[{...c.findings[0]!,status:"CONTESTED" as const,contradictingResourceIds:[]}]};expect(evaluateEDAnalysis(valid(),c2).status).toBe("INVALID")});
+ it("returns PARTIALLY_ASSESSED for a valid contested finding",()=>{const c=context();const c2={...c,findings:[{...c.findings[0]!,status:"CONTESTED" as const,contradictingResourceIds:["item-2"]}]};expect(evaluateEDAnalysis(valid(),c2).status).toBe("PARTIALLY_ASSESSED")});
+ it("preserves inconclusive analysis as partial",()=>{const c=context();const c2={...c,findings:[{...c.findings[0]!,status:"INCONCLUSIVE" as const}]};expect(evaluateEDAnalysis(valid(),c2).status).toBe("PARTIALLY_ASSESSED")});
+ it("preserves indeterminate finding as INDETERMINATE",()=>{const c=context();const c2={...c,findings:[{...c.findings[0]!,status:"INDETERMINATE" as const}]};expect(evaluateEDAnalysis(valid(),c2).status).toBe("INDETERMINATE")});
+ it("returns NOT_ASSESSED when no findings exist",()=>{const c=context();expect(evaluateEDAnalysis({...valid(),findingIds:[]},{...c,findings:[]}).status).toBe("NOT_ASSESSED")});
+ it("preserves analysis exceptions as partial",()=>expect(evaluateEDAnalysis({...valid(),exceptionIds:["exception-1"]},context()).status).toBe("PARTIALLY_ASSESSED"));
+ it("rejects unknown derivation references",()=>expect(evaluateEDAnalysis({...valid(),derivationRef:"missing"},context()).status).toBe("INVALID"));
+ it("rejects unknown audit references",()=>expect(evaluateEDAnalysis({...valid(),auditRef:"missing"},context()).status).toBe("INVALID"));
+ it("rejects duplicate target references",()=>expect(evaluateEDAnalysis({...valid(),targetResourceIds:["item-1","item-1"]},context()).status).toBe("INVALID"));
+});
