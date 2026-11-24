@@ -48,7 +48,7 @@ jobs:
 
           action: upload
 
-          app_location: public
+          app_location: "index.html,3:
 
           api_location: ''
 
