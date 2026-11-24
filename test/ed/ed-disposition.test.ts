@@ -1,0 +1,28 @@
+import { describe, expect, it } from "vitest";
+import { evaluateEDDisposition, type EDDispositionContext, type EDDispositionRecord } from "../../src/profiles/ed/ed-disposition.js";
+const context=():EDDispositionContext=>({matterId:"matter-1",resourceIds:new Set(["item-1","item-2"]),sourceRecordIds:new Set(["source-1"]),auditRefs:new Set(["audit-1"]),exceptionIds:new Set(["exception-1"]),retentionPolicyRefs:new Set(["policy-1"]),holdReleaseRefs:new Set(["release-1"]),destinationRefs:new Set(["dest-1"]),recipientRefs:new Set(["recipient-1"]),holdStates:new Map([["item-1","RELEASED"],["item-2","RELEASED"]]),authorizations:[{id:"auth-delete",actorId:"admin-1",matterId:"matter-1",action:"DELETE",resourceIds:["item-1","item-2"],state:"AUTHORIZED"}]});
+const validDelete=():EDDispositionRecord=>({id:"disp-1",matterId:"matter-1",action:"DELETE",targetResourceIds:["item-1"],performedBy:"admin-1",performedAt:"2026-11-22T00:00:00Z",authorizationId:"auth-delete",retentionPolicyRef:"policy-1",sourceRefs:["source-1"],auditRef:"audit-1",exceptionIds:[],completed:true});
+describe("TMO-ED disposition",()=>{
+ it("returns DISPOSED for authorized deletion after hold release",()=>expect(evaluateEDDisposition(validDelete(),context()).status).toBe("DISPOSED"));
+ it("requires target resources",()=>expect(evaluateEDDisposition({...validDelete(),targetResourceIds:[]},context()).status).toBe("INVALID"));
+ it("rejects unknown targets",()=>expect(evaluateEDDisposition({...validDelete(),targetResourceIds:["missing"]},context()).status).toBe("INVALID"));
+ it("requires action-specific authorization",()=>expect(evaluateEDDisposition({...validDelete(),authorizationId:undefined},context()).status).toBe("INVALID"));
+ it("does not allow RETAIN authorization to substitute for DELETE",()=>{const c=context();expect(evaluateEDDisposition(validDelete(),{...c,authorizations:[{...c.authorizations[0]!,action:"RETAIN"}]}).status).toBe("INVALID")});
+ it("rejects revoked authorization",()=>{const c=context();expect(evaluateEDDisposition(validDelete(),{...c,authorizations:[{...c.authorizations[0]!,state:"REVOKED"}]}).status).toBe("INVALID")});
+ it("preserves indeterminate authorization",()=>{const c=context();expect(evaluateEDDisposition(validDelete(),{...c,authorizations:[{...c.authorizations[0]!,state:"INDETERMINATE"}]}).status).toBe("INDETERMINATE")});
+ it("blocks deletion under active preservation hold",()=>{const c=context();expect(evaluateEDDisposition(validDelete(),{...c,holdStates:new Map([["item-1","ACTIVE"]])}).status).toBe("INVALID")});
+ it("blocks deletion under partially released hold",()=>{const c=context();expect(evaluateEDDisposition(validDelete(),{...c,holdStates:new Map([["item-1","PARTIALLY_RELEASED"]])}).status).toBe("INVALID")});
+ it("keeps unknown hold state indeterminate",()=>{const c=context();expect(evaluateEDDisposition(validDelete(),{...c,holdStates:new Map()}).status).toBe("INDETERMINATE")});
+ it("returns NOT_DISPOSED when action is incomplete",()=>expect(evaluateEDDisposition({...validDelete(),completed:false},context()).status).toBe("NOT_DISPOSED"));
+ it("preserves exceptions as PARTIALLY_DISPOSED",()=>expect(evaluateEDDisposition({...validDelete(),exceptionIds:["exception-1"]},context()).status).toBe("PARTIALLY_DISPOSED"));
+ it("rejects unknown exceptions",()=>expect(evaluateEDDisposition({...validDelete(),exceptionIds:["missing"]},context()).status).toBe("INVALID"));
+ it("requires TRANSFER destination",()=>{const c=context();const r={...validDelete(),action:"TRANSFER" as const,transferDestinationRef:undefined};const c2={...c,authorizations:[{...c.authorizations[0]!,action:"TRANSFER"}]};expect(evaluateEDDisposition(r,c2).status).toBe("INVALID")});
+ it("accepts addressable TRANSFER destination",()=>{const c=context();const r={...validDelete(),action:"TRANSFER" as const,transferDestinationRef:"dest-1"};const c2={...c,authorizations:[{...c.authorizations[0]!,action:"TRANSFER"}]};expect(evaluateEDDisposition(r,c2).status).toBe("DISPOSED")});
+ it("requires RETURN recipient",()=>{const c=context();const r={...validDelete(),action:"RETURN" as const};const c2={...c,authorizations:[{...c.authorizations[0]!,action:"RETURN"}]};expect(evaluateEDDisposition(r,c2).status).toBe("INVALID")});
+ it("accepts addressable RETURN recipient",()=>{const c=context();const r={...validDelete(),action:"RETURN" as const,returnRecipientRef:"recipient-1"};const c2={...c,authorizations:[{...c.authorizations[0]!,action:"RETURN"}]};expect(evaluateEDDisposition(r,c2).status).toBe("DISPOSED")});
+ it("requires hold-release reference for RELEASE_HOLD",()=>{const c=context();const r={...validDelete(),action:"RELEASE_HOLD" as const,holdReleaseRef:undefined};const c2={...c,authorizations:[{...c.authorizations[0]!,action:"RELEASE_HOLD"}]};expect(evaluateEDDisposition(r,c2).status).toBe("INVALID")});
+ it("accepts RELEASE_HOLD with addressable release",()=>{const c=context();const r={...validDelete(),action:"RELEASE_HOLD" as const,holdReleaseRef:"release-1"};const c2={...c,authorizations:[{...c.authorizations[0]!,action:"RELEASE_HOLD"}]};expect(evaluateEDDisposition(r,c2).status).toBe("DISPOSED")});
+ it("reports retention without policy as partial",()=>{const c=context();const r={...validDelete(),action:"RETAIN" as const,retentionPolicyRef:undefined};const c2={...c,authorizations:[{...c.authorizations[0]!,action:"RETAIN"}]};expect(evaluateEDDisposition(r,c2).status).toBe("PARTIALLY_DISPOSED")});
+ it("rejects unknown audit references",()=>expect(evaluateEDDisposition({...validDelete(),auditRef:"missing"},context()).status).toBe("INVALID"));
+ it("rejects duplicate target resources",()=>expect(evaluateEDDisposition({...validDelete(),targetResourceIds:["item-1","item-1"]},context()).status).toBe("INVALID"));
+});
