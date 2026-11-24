@@ -36,7 +36,7 @@ jobs:
       packages: read
 
       # only required for workflows in private repositories
-      actions: read
+      actions: write
       contents: read
 
     strategy:
@@ -44,7 +44,7 @@ jobs:
       matrix:
         include:
         - language: actions
-          build-mode: none
+          build-mode: npm install lock-file-only
         - language: javascript-typescript
           build-mode: none
         - language: python
