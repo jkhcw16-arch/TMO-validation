@@ -2,7 +2,10 @@
   "name": "@jamiekinney/tmo-validation",
   "private": true,
   "type": "module",
-  "scripts": {
+  "scripts": "mutation:ed": "stryker run stryker.ed.config.mjs",
+   "mutation:ed:log": "stryker run stryker.ed.config.mjs                                      
+   "reporters clear. -text,progress",
+    "quality:ed": "vitest run test/ed && npm run mutation:ed"
     "clean": "rm -rf coverage .vitest",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
