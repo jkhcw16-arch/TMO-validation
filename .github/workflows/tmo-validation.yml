@@ -1,0 +1,60 @@
+name: TMO validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.py'
+      - 'tests/**'
+      - 'test/**'
+      - 'requirements.txt'
+      - 'pyproject.toml'
+      - 'pytest.ini'
+      - '.github/workflows/tmo-validation.yml'
+
+  pull_request:
+    paths:
+      - '**.py'
+      - 'tests/**'
+      - 'test/**'
+      - 'requirements.txt'
+      - 'pyproject.toml'
+      - 'pytest.ini'
+      - '.github/workflows/tmo-validation.yml'
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements.txt
+
+      - name: Run test suite
+        shell: bash
+        run: |
+          python -m pytest
+
+      - name: Validate traceability matrix
+        shell: bash
+        run: |
+          python validate_traceability_matrix.py
