@@ -2,14 +2,15 @@ name: TMO Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
-      - 'index.html'
-      - 'docs/**'
-      - 'PTM-Answer-Accuracy-Improvement-v1.2.1.md'
-      - 'PTM_TMO_Traceability_With_Validation_Report.xlsx'
-      - 'TMO-LE-v0.1.0-Final-Release-Report.docx'
-      - '.github/workflows/pages.yml'
+      - "index.html"
+      - "docs/**"
+      - "PTM-Answer-Accuracy-Improvement-v1.2.1.md"
+      - "PTM_TMO_Traceability_With_Validation_Report.xlsx"
+      - "TMO-LE-v0.1.0-Final-Release-Report.docx"
+      - ".github/workflows/pages.yml"
 
   workflow_dispatch:
 
@@ -19,11 +20,43 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: "tmo-pages"
+  cancel-in-progress: false
 
 jobs:
+
+  build:
+    name: Build Pages artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Verify site entry point
+        shell: bash
+        run: |
+          test -f index.html
+          echo "index.html found"
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
   deploy:
+    name: Deploy Pages
+
+    needs:
+      - build
+
+    permissions:
+      pages: write
+      id-token: write
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -31,19 +64,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload site
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-
-      - name: Deploy Pages
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
