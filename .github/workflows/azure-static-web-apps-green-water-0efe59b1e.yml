@@ -1,44 +1,56 @@
-name: Azure Static Web Apps CI/CD
+name: Deploy TMO site to Azure Static Web Apps
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
+    paths:
+      - "index.html"
+      - "site.css"
+      - "price.html"
+      - "inquiries.html"
+      - "privacy.html"
+      - "staticwebapp.config.json"
+      - ".github/workflows/azure-static-web-apps.yml"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: tmo-azure-static-web-app
+  cancel-in-progress: true
 
 jobs:
-  build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+  deploy:
+    name: Deploy TMO site
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-          lfs: false
 
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
-          action: "upload"
-          app_location: "site.css"
-          api_location: ""
-          output_location: "dist"
+    environment:
+      name: production
 
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
-    permissions:
-      contents: read
     steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
+      - name: Check out repository
+        uses: actions/checkout@v4
         with:
-          action: "close"
+          persist-credentials: false
+
+      - name: Verify static site files
+        shell: bash
+        run: |
+          test -f index.html
+          test -f site.css
+
+          echo "index.html found"
+          echo "site.css found"
+
+      - name: Sign in to Azure with OIDC
+        uses: azure/login@v2
+        
+
+      - name: Deploy to Azure Static Web Apps
+        shell: bash
+        env:
+          STATIC_WEB_APP_NAME: ${{ vars.AZURE_STATIC_WEB_APP_NAME }}
