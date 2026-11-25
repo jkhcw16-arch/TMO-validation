@@ -6,7 +6,15 @@ on:
       - main
     paths:
       - "index.html"
+      - "site.css"
+      - "price.html"
+      - "inquiries.html"
+      - "privacy.html"
+      - "staticwebapp.config.json"
       - "docs/**"
+      - "src/profiles/ed/**"
+      - "src/profiles/le/**"
+      - "src/profiles/ca/**"
       - "PTM-Answer-Accuracy-Improvement-v1.2.1.md"
       - "PTM_TMO_Traceability_With_Validation_Report.xlsx"
       - "TMO-LE-v0.1.0-Final-Release-Report.docx"
@@ -26,29 +34,93 @@ concurrency:
 jobs:
 
   build:
-    name: Build Pages artifact
+    name: Build TMO Pages
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Verify site entry point
+      - name: Verify website files
         shell: bash
         run: |
           test -f index.html
-          echo "index.html found"
+          test -f site.css
+
+          echo "TMO homepage found"
+          echo "Shared stylesheet found"
+
+          if [ -f price.html ]; then
+            echo "Pricing page found"
+          fi
+
+          if [ -f inquiries.html ]; then
+            echo "Inquiries page found"
+          fi
+
+          if [ -f privacy.html ]; then
+            echo "Privacy page found"
+          fi
+
+      - name: Prepare Pages site
+        shell: bash
+        run: |
+          mkdir -p _site
+
+          cp index.html _site/
+          cp site.css _site/
+
+          if [ -f price.html ]; then
+            cp price.html _site/
+          fi
+
+          if [ -f inquiries.html ]; then
+            cp inquiries.html _site/
+          fi
+
+          if [ -f privacy.html ]; then
+            cp privacy.html _site/
+          fi
+
+          if [ -f staticwebapp.config.json ]; then
+            cp staticwebapp.config.json _site/
+          fi
+
+          if [ -d docs ]; then
+            cp -R docs _site/
+          fi
+
+          if [ -d src ]; then
+            cp -R src _site/
+          fi
+
+          if [ -f PTM-Answer-Accuracy-Improvement-v1.2.1.md ]; then
+            cp PTM-Answer-Accuracy-Improvement-v1.2.1.md _site/
+          fi
+
+          if [ -f PTM_TMO_Traceability_With_Validation_Report.xlsx ]; then
+            cp PTM_TMO_Traceability_With_Validation_Report.xlsx _site/
+          fi
+
+          if [ -f TMO-LE-v0.1.0-Final-Release-Report.docx ]; then
+            cp TMO-LE-v0.1.0-Final-Release-Report.docx _site/
+          fi
+
+          echo "TMO Pages site prepared"
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "."
+          path: "_site"
+
 
   deploy:
-    name: Deploy Pages
+    name: Deploy TMO Pages
 
     needs:
       - build
