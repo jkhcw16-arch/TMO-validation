@@ -11,7 +11,7 @@ on:
       - "inquiries.html"
       - "privacy.html"
       - "staticwebapp.config.json"
-      - ".github/workflows/azure-static-web-apps.yml"
+      - ".github/workflows/azure-static-web-apps-green-water-0efe59b1e.yml"
 
   workflow_dispatch:
 
@@ -28,16 +28,13 @@ jobs:
     name: Deploy TMO site
     runs-on: ubuntu-latest
 
-    environment:
-      name: production
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
 
-      - name: Verify static site files
+      - name: Verify static site
         shell: bash
         run: |
           test -f index.html
@@ -46,11 +43,25 @@ jobs:
           echo "index.html found"
           echo "site.css found"
 
-      - name: Sign in to Azure with OIDC
+      - name: Sign in to Azure using OIDC
         uses: azure/login@v2
-        
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Deploy to Azure Static Web Apps
+      - name: Show Azure account
+        shell: bash
+        run: |
+          az account show --output table
+
+      - name: Deploy TMO site
         shell: bash
         env:
           STATIC_WEB_APP_NAME: ${{ vars.AZURE_STATIC_WEB_APP_NAME }}
+          RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+        run: |
+          az staticwebapp deploy \
+            --name "$STATIC_WEB_APP_NAME" \
+            --resource-group "$RESOURCE_GROUP" \
+            --source "."
