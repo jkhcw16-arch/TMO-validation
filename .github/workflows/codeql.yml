@@ -44,7 +44,7 @@ jobs:
       matrix:
         include:
         - language: actions
-          build-mode: npm install lock-file-only
+          build-mode: npm install autobuild
         - language: javascript-typescript
           build-mode: none
         - language: python
