@@ -1,989 +1,651 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#07111f">
-  <meta name="description" content="A public entry point for TMO validation artifacts, TMO-LE evidence semantics, TMO-CA constitutional analysis, provenance-aware inference, traceability, diagnostics, and PTM answer-accuracy evaluation.">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="theme-color"
+    content="#07111f"
+  >
+
+  <meta
+    name="description"
+    content="TMO Validation: e-discovery, evidence qualification, constitutional analysis, validation, traceability, and PTM resources."
+  >
+
   <title>TMO Validation</title>
 
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #07111f;
-      --card: #0e1b2c;
-      --card-soft: #0a1727;
-      --line: #20334d;
-      --text: #eef6ff;
-      --muted: #a8b7ca;
-      --accent: #62d0ff;
-      --green: #75e0a7;
-      --amber: #f5c26b;
-      --red: #ff8b8b;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      font-synthesis: none;
-      text-rendering: optimizeLegibility;
-    }
-
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 90px;
-    }
-
-    body {
-      margin: 0;
-      min-width: 320px;
-      background:
-        radial-gradient(circle at 80% 0, #123152 0, transparent 35%),
-        var(--bg);
-      color: var(--text);
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    a {
-      color: var(--accent);
-    }
-
-    a:focus-visible,
-    button:focus-visible {
-      outline: 3px solid var(--accent);
-      outline-offset: 3px;
-    }
-
-    .skip-link {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      z-index: 2000;
-      padding: 10px 14px;
-      transform: translateY(-160%);
-      border-radius: 8px;
-      background: var(--card);
-      color: var(--text);
-    }
-
-    .skip-link:focus {
-      transform: translateY(0);
-    }
-
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      border-bottom: 1px solid var(--line);
-      background: rgba(7, 17, 31, .94);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-
-    .nav-inner {
-      width: min(1080px, 92%);
-      min-height: 64px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 22px;
-    }
-
-    .brand {
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 800;
-      letter-spacing: .04em;
-      white-space: nowrap;
-    }
-
-    .brand span {
-      color: var(--green);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: .92rem;
-      font-weight: 600;
-    }
-
-    .nav-links a:hover,
-    .nav-links a:focus-visible {
-      color: var(--accent);
-    }
-
-    .github-button {
-      padding: 8px 14px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-    }
-
-    .menu-button {
-      display: none;
-      appearance: none;
-      padding: 8px 12px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--card);
-      color: var(--text);
-      font: inherit;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    main {
-      width: min(1080px, 92%);
-      margin: auto;
-      padding: 72px 0;
-    }
-
-    section[id] {
-      scroll-margin-top: 88px;
-    }
-
-    .eyebrow {
-      color: var(--green);
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      margin: .25em 0;
-      font-size: clamp(2.7rem, 8vw, 5.8rem);
-      line-height: .98;
-      letter-spacing: -.045em;
-    }
-
-    .lead {
-      max-width: 780px;
-      color: var(--muted);
-      font-size: 1.2rem;
-    }
-
-    .section-heading {
-      margin-top: 72px;
-    }
-
-    .section-heading h2 {
-      margin: 8px 0 10px;
-      font-size: 1.9rem;
-      line-height: 1.2;
-    }
-
-    .section-heading p {
-      max-width: 800px;
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .overview,
-    .score {
-      margin-top: 72px;
-      padding: 30px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(14, 27, 44, .78);
-    }
-
-    .overview h2 {
-      margin: 8px 0 12px;
-      font-size: 1.8rem;
-    }
-
-    .overview p {
-      max-width: 850px;
-      color: var(--muted);
-    }
-
-    .architecture-flow {
-      margin-top: 24px;
-      padding: 18px 20px;
-      border-left: 3px solid var(--green);
-      border-radius: 8px;
-      background: var(--card-soft);
-      color: var(--muted);
-      font-family:
-        ui-monospace,
-        SFMono-Regular,
-        Menlo,
-        Consolas,
-        monospace;
-      overflow-wrap: anywhere;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns:
-        repeat(auto-fit, minmax(min(230px, 100%), 1fr));
-      gap: 16px;
-      margin-top: 24px;
-    }
-
-    .card {
-      display: block;
-      padding: 22px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--card);
-      color: inherit;
-      text-decoration: none;
-      transition:
-        border-color .2s ease,
-        transform .2s ease;
-    }
-
-    .card:hover,
-    .card:focus-visible {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-    }
-
-    .card h3 {
-      margin: 0 0 8px;
-      font-size: 1.05rem;
-    }
-
-    .card p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .rule-number {
-      display: inline-block;
-      margin-bottom: 9px;
-      color: var(--green);
-      font-size: .82rem;
-      font-weight: 800;
-      letter-spacing: .08em;
-    }
-
-    .status-group {
-      margin-top: 20px;
-      padding: 22px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--card-soft);
-    }
-
-    .status-group h3 {
-      margin: 0 0 14px;
-    }
-
-    .status-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 9px;
-    }
-
-    .status {
-      padding: 7px 10px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      color: var(--muted);
-      font-size: .88rem;
-    }
-
-    .status.good {
-      color: var(--green);
-    }
-
-    .status.warning {
-      color: var(--amber);
-    }
-
-    .status.danger {
-      color: var(--red);
-    }
-
-    .precedence {
-      display: grid;
-      gap: 8px;
-      margin-top: 24px;
-    }
-
-    .precedence div {
-      padding: 13px 16px;
-      border-left: 3px solid var(--accent);
-      background: var(--card-soft);
-      color: var(--muted);
-    }
-
-    footer {
-      margin-top: 72px;
-      padding-top: 24px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: .9rem;
-    }
-
-    @media (max-width: 760px) {
-      html {
-        scroll-padding-top: 76px;
-      }
-
-      .nav-inner {
-        min-height: 60px;
-        flex-wrap: wrap;
-        gap: 0;
-        padding: 10px 0;
-      }
-
-      .menu-button {
-        display: block;
-      }
-
-      .nav-links {
-        display: none;
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 4px;
-        padding: 12px 0 6px;
-      }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .nav-links a {
-        display: block;
-        padding: 11px 8px;
-        border-radius: 8px;
-      }
-
-      .nav-links a:hover,
-      .nav-links a:focus-visible {
-        background: var(--card);
-      }
-
-      .github-button {
-        border: 0;
-      }
-
-      main {
-        padding-top: 52px;
-      }
-
-      h1 {
-        font-size: clamp(2.7rem, 15vw, 4.5rem);
-      }
-
-      .lead {
-        font-size: 1.08rem;
-      }
-
-      .overview,
-      .section-heading {
-        margin-top: 52px;
-      }
-
-      .overview {
-        padding: 24px 20px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-
-      *,
-      *::before,
-      *::after {
-        transition-duration: .01ms !important;
-      }
-    }
-  </style>
+  <!-- Shared stylesheet -->
+  <link rel="stylesheet" href="site.css">
 </head>
 
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="navbar">
-    <nav class="nav-inner" aria-label="Main navigation">
-      <a class="brand" href="#home">
+<body>
+
+  <!-- =====================================================
+       Navigation
+       ===================================================== -->
+
+  <header class="site-header">
+
+    <nav
+      class="nav-inner"
+      aria-label="Main navigation"
+    >
+
+      <a
+        class="brand"
+        href="#home"
+      >
         TMO <span>Validation</span>
       </a>
+
 
       <button
         class="menu-button"
         type="button"
         aria-expanded="false"
-        aria-controls="nav-links">
+        aria-controls="navLinks"
+      >
         Menu
       </button>
 
-      <div class="nav-links" id="nav-links">
-        <a href="#home">Home</a>
-        <a href="#invariants">LE</a>
-        <a href="#epistemic">Epistemic</a>
-        <a href="#constitutional">CA</a>
-        <a href="#resources">Resources</a>
-        <a href="#traceability">Traceability</a>
-        <a
-          class="github-button"
-          href="https://github.com/jkhcw16-arch/TMO-validation">
-          GitHub
+
+      <div
+        class="nav-links"
+        id="navLinks"
+      >
+
+        <a href="#home">
+          Home
         </a>
+
+        <a href="#about">
+          About
+        </a>
+
+        <a href="#ed">
+          ED
+        </a>
+
+        <a href="#le">
+          LE
+        </a>
+
+        <a href="#ca">
+          CA
+        </a>
+
+        <a href="#resources">
+          Resources
+        </a>
+
+        <a href="price.html">
+          Pricing
+        </a>
+
+        <a href="inquiries.html">
+          Inquiries
+        </a>
+
+        <a href="privacy.html">
+          Privacy
+        </a>
+
       </div>
+
     </nav>
+
   </header>
 
-  <main id="main">
 
-    <section id="home" aria-labelledby="page-title">
-      <p class="eyebrow">TMO Validation</p>
+  <!-- =====================================================
+       Main content
+       ===================================================== -->
 
-      <h1 id="page-title">
-        Validation,<br>
+  <main>
+
+
+    <!-- ===================================================
+         Home
+         =================================================== -->
+
+    <section
+      class="hero"
+      id="home"
+    >
+
+      <p class="eyebrow">
+        TMO Validation
+      </p>
+
+
+      <h1>
+        Evidence to analysis,<br>
         made inspectable.
       </h1>
 
+
       <p class="lead">
-        A public entry point for TMO validation artifacts,
-        TMO-LE evidence semantics, TMO-CA constitutional analysis,
-        provenance-aware inference, epistemic assessment,
-        traceability, diagnostics, and PTM answer-accuracy evaluation.
+        A public entry point for TMO validation,
+        e-discovery workflows, evidence qualification,
+        constitutional analysis, traceability,
+        diagnostics, and PTM answer-accuracy work.
       </p>
+
+
+      <div class="hero-actions">
+
+        <a
+          class="button button-primary"
+          href="#ed"
+        >
+          Explore TMO-ED
+        </a>
+
+
+        <a
+          class="button button-secondary"
+          href="#resources"
+        >
+          Validation resources
+        </a>
+
+
+        <a
+          class="button button-secondary"
+          href="inquiries.html"
+        >
+          Make an inquiry
+        </a>
+
+      </div>
+
     </section>
 
-    <section class="overview" aria-labelledby="architecture-title">
-      <p class="eyebrow">Current architecture</p>
 
-      <h2 id="architecture-title">
-        Evidence to constitutional analysis
+    <!-- ===================================================
+         About
+         =================================================== -->
+
+    <section
+      class="section"
+      id="about"
+    >
+
+      <p class="eyebrow">
+        About
+      </p>
+
+
+      <h2>
+        About TMO Validation
       </h2>
 
-      <p>
-        TMO-LE preserves and qualifies evidence.
-        TMO-CA applies constitutional text, authority,
-        precedent, doctrine, standards, and qualified
-        factual predicates without allowing evidence scores
-        to substitute for legal analysis.
+
+      <div class="panel">
+
+        <p class="muted">
+          TMO Validation provides a public,
+          inspectable location for validation artifacts,
+          evidence-oriented profiles, traceability,
+          implementation resources, diagnostics,
+          release documentation, and PTM
+          answer-accuracy work.
+        </p>
+
+
+        <div class="flow">
+          TMO-ED
+          →
+          TMO-LE
+          →
+          TMO-CA
+          →
+          validation
+          →
+          traceability
+          →
+          review
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         TMO-ED
+         =================================================== -->
+
+    <section
+      class="section"
+      id="ed"
+    >
+
+      <p class="eyebrow">
+        TMO-ED
       </p>
 
-      <div class="architecture-flow">
-        Preserved resource
-        → provenance
-        → LE qualification
-        → epistemic assessment
-        → CA doctrine + authority
-        → CA application
-        → CA conclusion
-        → review / audit
-      </div>
-    </section>
 
-    <section id="invariants" aria-labelledby="invariants-title">
-      <div class="section-heading">
-        <p class="eyebrow">TMO-LE foundation</p>
+      <h2>
+        E-discovery profile
+      </h2>
 
-        <h2 id="invariants-title">
-          Evidence invariants
-        </h2>
 
-        <p>
-          Interpretation may reduce uncertainty only when
-          additional evidence justifies that reduction.
-        </p>
-      </div>
-
-      <div class="grid">
-
-        <article class="card">
-          <span class="rule-number">LE-101</span>
-          <h3>Preservation before interpretation</h3>
-          <p>
-            Preserve what was observed before deciding
-            what it means.
-          </p>
-        </article>
-
-        <article class="card">
-          <span class="rule-number">LE-102</span>
-          <h3>Assertion is not fact</h3>
-          <p>
-            Recording a proposition does not establish it
-            as fact.
-          </p>
-        </article>
-
-        <article class="card">
-          <span class="rule-number">LE-103</span>
-          <h3>Unknown is not zero or pass</h3>
-          <p>
-            Missing or unresolved information remains explicit.
-          </p>
-        </article>
-
-        <article class="card">
-          <span class="rule-number">LE-104</span>
-          <h3>Independence is origin-based</h3>
-          <p>
-            Duplicate records do not become independent
-            corroboration.
-          </p>
-        </article>
-
-        <article class="card">
-          <span class="rule-number">LE-105</span>
-          <h3>Strength is provenance-bounded</h3>
-          <p>
-            A finding cannot exceed the support of its
-            provenance.
-          </p>
-        </article>
-
-        <article class="card">
-          <span class="rule-number">LE-106</span>
-          <h3>No manufactured temporal precision</h3>
-          <p>
-            Derived time claims require evidentiary support.
-          </p>
-        </article>
-
-        <article class="card">
-          <span class="rule-number">LE-107</span>
-          <h3>Relations remain separate</h3>
-          <p>
-            Identity, role, attribution, causation,
-            and authorization require separate support.
-          </p>
-        </article>
-
-      </div>
-    </section>
-
-    <section id="epistemic" aria-labelledby="epistemic-title">
-      <div class="section-heading">
-        <p class="eyebrow">Epistemic layer</p>
-
-        <h2 id="epistemic-title">
-          Evidentiary status without truth inflation
-        </h2>
-
-        <p>
-          Epistemic status records what available evidence
-          supports, not an unqualified declaration of truth.
-        </p>
-      </div>
-
-      <div class="status-group">
-        <h3>Epistemic states</h3>
-
-        <div class="status-list">
-          <span class="status">UNASSESSED</span>
-          <span class="status good">SUPPORTED</span>
-          <span class="status">PARTIALLY SUPPORTED</span>
-          <span class="status danger">CONTRADICTION</span>
-          <span class="status warning">INCONCLUSIVE</span>
-          <span class="status">WITHDRAWN</span>
-        </div>
-      </div>
-
-      <div class="status-group">
-        <h3>Qualified dimensions</h3>
-
-        <div class="status-list">
-          <span class="status">UNVERIFIED</span>
-          <span class="status">PARTIALLY VERIFIED</span>
-          <span class="status good">VERIFIED</span>
-          <span class="status danger">FAILED</span>
-          <span class="status warning">INDETERMINATE</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="evidence" aria-labelledby="evidence-title">
-      <div class="section-heading">
-        <p class="eyebrow">Evidence weighting</p>
-
-        <h2 id="evidence-title">
-          Proposition-specific evidence assessment
-        </h2>
-
-        <p>
-          Weight belongs to the relationship between an
-          evidence item and a proposition. Evidence weight
-          does not establish truth or constitutionality.
-        </p>
-      </div>
-
-      <div class="grid">
-
-        <article class="card">
-          <h3>Relevance</h3>
-          <p>
-            How directly evidence bears on a proposition.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Context</h3>
-          <p>
-            Applicability to the relevant circumstances.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Source identity</h3>
-          <p>
-            Whether the particular source is sufficiently
-            identified.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Authenticity</h3>
-          <p>
-            Whether the item is supported as what it
-            purports to be.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Independence</h3>
-          <p>
-            Whether the evidence has an independent origin.
-          </p>
-        </article>
-
-      </div>
-    </section>
-
-    <section id="constitutional" aria-labelledby="ca-title">
-
-      <div class="section-heading">
-        <p class="eyebrow">
-          TMO-CA Constitutional Analysis
-        </p>
-
-        <h2 id="ca-title">
-          Legal analysis stays separate from evidentiary support
-        </h2>
-
-        <p>
-          TMO-CA consumes qualified TMO-LE predicates while
-          keeping constitutional text, authority, precedent,
-          doctrine, application, counterargument, and conclusion
-          independently addressable.
-        </p>
-      </div>
-
-      <div class="architecture-flow">
-        Qualified LE facts
-        + constitutional provision
-        + authority / precedent
-        + doctrine / standard
-        → CAApplication
-        → CAConclusion
-        → review disposition
-      </div>
-
-      <div class="grid">
-
-        <article class="card">
-          <h3>Constitutional text</h3>
-          <p>
-            Text remains distinct from judicial, historical,
-            doctrinal, and analytical interpretations.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Authority</h3>
-          <p>
-            Binding status, current treatment, jurisdiction,
-            provenance, and evidence weight remain distinct.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Precedent</h3>
-          <p>
-            Holding, rationale, facts, scope,
-            proposition-specific use, and later treatment
-            remain separately traceable.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Doctrine</h3>
-          <p>
-            Elements and exceptions are represented and
-            evaluated separately.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Application</h3>
-          <p>
-            Connects qualified factual predicates to explicit
-            doctrine and legal authority.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Conclusion</h3>
-          <p>
-            Conclusions require ready applications and legal
-            authority; adverse authority remains visible.
-          </p>
-        </article>
-
-      </div>
-
-      <div class="status-group">
-        <h3>CA review dispositions</h3>
-
-        <div class="status-list">
-          <span class="status good">READY FOR REVIEW</span>
-          <span class="status warning">CONTESTED REVIEW</span>
-          <span class="status">NO MERITS DETERMINATION</span>
-          <span class="status warning">INDETERMINATE</span>
-          <span class="status danger">INVALID</span>
-        </div>
-      </div>
-
-      <div class="precedence">
-        <div>
-          Evidence score ≠ constitutionality.
-        </div>
-
-        <div>
-          VALID factual representation ≠ constitutional conclusion.
-        </div>
-
-        <div>
-          READY application ≠ merits conclusion.
-        </div>
-
-        <div>
-          READY FOR REVIEW ≠ judicial determination.
-        </div>
-
-        <div>
-          Adverse authority and uncertainty remain represented.
-        </div>
-      </div>
-
-    </section>
-
-    <section id="resources" aria-labelledby="resources-title">
-
-      <div class="section-heading">
-        <p class="eyebrow">Explore the project</p>
-
-        <h2 id="resources-title">
-          Resources
-        </h2>
-
-        <p>
-          TMO-LE and TMO-CA source modules, documentation,
-          validation logic, and tests.
-        </p>
-      </div>
-
-      <div class="grid">
-
-        <a class="card" href="README.md">
-          <h3>Project README</h3>
-          <p>Repository overview and setup.</p>
-        </a>
-
-        <a class="card" href="src/profiles/ca/README.md">
-          <h3>TMO-CA README</h3>
-          <p>
-            Constitutional Analysis architecture and
-            CA-101 through CA-110.
-          </p>
-        </a>
-
-        <a
-          class="card"
-          href="src/profiles/ca/ca-resource-registry.ts">
-          <h3>CA resource registry</h3>
-          <p>
-            Canonical CA resources, layers, invariants,
-            and LE bridge boundaries.
-          </p>
-        </a>
-
-        <a
-          class="card"
-          href="src/profiles/ca/ca-validation.ts">
-          <h3>CA validation</h3>
-          <p>
-            Cross-resource validation rules for
-            constitutional analysis.
-          </p>
-        </a>
-
-        <a
-          class="card"
-          href="src/profiles/ca/ca-authority.ts">
-          <h3>CA authority</h3>
-          <p>
-            Authority classification and structural validation.
-          </p>
-        </a>
-
-        <a
-          class="card"
-          href="src/profiles/ca/ca-precedent.ts">
-          <h3>CA precedent</h3>
-          <p>
-            Holding, rationale, scope, claim linkage,
-            and later-treatment lineage.
-          </p>
-        </a>
-
-        <a
-          class="card"
-          href="src/profiles/ca/ca-doctrine.ts">
-          <h3>CA doctrine</h3>
-          <p>
-            Separate doctrine elements, exceptions,
-            findings, and evaluation.
-          </p>
-        </a>
-
-        <a
-          class="card"
-          href="src/profiles/ca/ca-application.ts">
-          <h3>CA application</h3>
-          <p>
-            The explicit LE-to-CA legal application boundary.
-          </p>
-        </a>
-
-        <a
-          class="card"
-          href="src/profiles/ca/ca-conclusion.ts">
-          <h3>CA conclusion</h3>
-          <p>
-            Support-bounded conclusions and review dispositions.
-          </p>
-        </a>
-
-        <a
-          class="card"
-          href="TMO-LE-v0.1.0-Final-Release-Report.docx">
-          <h3>TMO-LE release report</h3>
-          <p>
-            Download the final release report.
-          </p>
-        </a>
-
-        <a
-          class="card"
-          href="PTM-Answer-Accuracy-Improvement-v1.2.1.md">
-          <h3>PTM answer accuracy</h3>
-          <p>
-            Read the answer-accuracy improvement specification.
-          </p>
-        </a>
-
-      </div>
-    </section>
-
-    <section id="traceability" aria-labelledby="traceability-title">
-
-      <div class="section-heading">
-        <p class="eyebrow">Evidence and audit</p>
-
-        <h2 id="traceability-title">
-          Traceability
-        </h2>
-
-        <p>
-          Traceability connects requirements, validation
-          results, evidence, legal analysis, and project outputs.
-        </p>
-      </div>
-
-      <div class="grid">
-
-        <a
-          class="card"
-          href="PTM_TMO_Traceability_With_Validation_Report.xlsx">
-          <h3>Traceability and validation report</h3>
-          <p>
-            Open the project traceability matrix
-            and validation report.
-          </p>
-        </a>
-
-        <a class="card" href="traceability.txt">
-          <h3>Traceability text</h3>
-          <p>
-            View the text-format traceability artifact.
-          </p>
-        </a>
-
-        <a class="card" href="ptm-answer-accuracy/">
-          <h3>PTM answer-accuracy materials</h3>
-          <p>
-            Browse answer-accuracy project materials.
-          </p>
-        </a>
-
-      </div>
-    </section>
-
-    <footer>
-      <p>
-        TMO Validation ·
-        <a href="https://github.com/jkhcw16-arch/TMO-validation">
-          View the repository on GitHub
-        </a>
+      <p class="muted narrow">
+        TMO-ED provides an evidence-discovery layer
+        covering collection, preservation, review,
+        privilege, production, disposition,
+        validation, and the transition of evidence
+        into downstream qualification.
       </p>
-    </footer>
 
-  </main>
 
-  <script>
-    const menuButton = document.querySelector('.menu-button');
-    const navigation = document.querySelector('#nav-links');
+      <div class="flow">
+        Collection
+        →
+        preservation
+        →
+        review
+        →
+        privilege
+        →
+        production
+        →
+        disposition
+        →
+        ED-to-LE bridge
+      </div>
 
-    menuButton.addEventListener('click', () => {
-      const isOpen =
-        menuButton.getAttribute('aria-expanded') === 'true';
 
-      menuButton.setAttribute(
-        'aria-expanded',
-        String(!isOpen)
-      );
+      <div class="grid">
 
-      navigation.classList.toggle(
-        'open',
-        !isOpen
-      );
-    });
 
-    navigation.addEventListener('click', (event) => {
-      if (event.target.closest('a')) {
-        menuButton.setAttribute(
-          'aria-expanded',
-          'false'
-        );
+        <a
+          class="card"
+          href="src/profiles/ed/ed-resource-registry.ts"
+        >
 
-        navigation.classList.remove('open');
-      }
-    });
-  </script>
+          <h3>
+            ED resource registry
+          </h3>
 
-</body>
-</html>
+          <p>
+            Browse the ED resource definitions.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="src/profiles/ed/ed-validation.ts"
+        >
+
+          <h3>
+            ED validation
+          </h3>
+
+          <p>
+            Review ED validation implementation.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="src/profiles/ed/ed-collection.ts"
+        >
+
+          <h3>
+            Collection
+          </h3>
+
+          <p>
+            Review the collection implementation.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="src/profiles/ed/ed-preservation.ts"
+        >
+
+          <h3>
+            Preservation
+          </h3>
+
+          <p>
+            Review preservation implementation.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="src/profiles/ed/ed-privilege.ts"
+        >
+
+          <h3>
+            Privilege
+          </h3>
+
+          <p>
+            Review privilege-related implementation.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="src/profiles/ed/ed-production.ts"
+        >
+
+          <h3>
+            Production
+          </h3>
+
+          <p>
+            Review production implementation.
+          </p>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         TMO-LE
+         =================================================== -->
+
+    <section
+      class="section"
+      id="le"
+    >
+
+      <p class="eyebrow">
+        TMO-LE
+      </p>
+
+
+      <h2>
+        Evidence qualification
+      </h2>
+
+
+      <p class="muted narrow">
+        TMO-LE provides the evidence-focused layer
+        of the validation architecture, keeping
+        provenance, qualification, uncertainty,
+        support, and downstream use independently
+        inspectable.
+      </p>
+
+
+      <div class="grid">
+
+
+        <a
+          class="card"
+          href="src/profiles/le/"
+        >
+
+          <h3>
+            LE profile
+          </h3>
+
+          <p>
+            Browse the TMO-LE implementation.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="TMO-LE-v0.1.0-Final-Release-Report.docx"
+        >
+
+          <h3>
+            TMO-LE release report
+          </h3>
+
+          <p>
+            Open the final release report.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="docs/tmo-le-reference-mutation-ci.md"
+        >
+
+          <h3>
+            TMO-LE CI
+          </h3>
+
+          <p>
+            Read the reference mutation CI
+            documentation.
+          </p>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         TMO-CA
+         =================================================== -->
+
+    <section
+      class="section"
+      id="ca"
+    >
+
+      <p class="eyebrow">
+        TMO-CA
+      </p>
+
+
+      <h2>
+        Constitutional analysis
+      </h2>
+
+
+      <p class="muted narrow">
+        TMO-CA keeps constitutional text,
+        legal authority, precedent, doctrine,
+        factual application, counterargument,
+        and conclusions independently addressable
+        while consuming qualified evidence.
+      </p>
+
+
+      <div class="flow">
+        Qualified evidence
+        +
+        constitutional text
+        +
+        authority
+        +
+        doctrine
+        →
+        application
+        →
+        conclusion
+        →
+        review
+      </div>
+
+
+      <div class="grid">
+
+
+        <a
+          class="card"
+          href="src/profiles/ca/README.md"
+        >
+
+          <h3>
+            CA overview
+          </h3>
+
+          <p>
+            Read the Constitutional Analysis
+            profile documentation.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="src/profiles/ca/ca-validation.ts"
+        >
+
+          <h3>
+            CA validation
+          </h3>
+
+          <p>
+            Review constitutional-analysis
+            validation logic.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="src/profiles/ca/ca-authority.ts"
+        >
+
+          <h3>
+            Authority
+          </h3>
+
+          <p>
+            Review authority classification
+            and representation.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="src/profiles/ca/ca-precedent.ts"
+        >
+
+          <h3>
+            Precedent
+          </h3>
+
+          <p>
+            Review precedent representation.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="src/profiles/ca/ca-doctrine.ts"
+        >
+
+          <h3>
+            Doctrine
+          </h3>
+
+          <p>
+            Review doctrine and elements.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="src/profiles/ca/ca-application.ts"
+        >
+
+          <h3>
+            Application
+          </h3>
+
+          <p>
+            Review the evidence-to-analysis boundary.
+          </p>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         Resources
+         =================================================== -->
+
+    <section
+      class="section"
+      id="resources"
+    >
+
+      <p class="eyebrow">
+        Resources
+      </p>
+
+
+      <h2>
+        Validation and traceability
+      </h2>
+
+
+      <div class="grid">
+
+
+        <a
+          class="card"
+          href="README.md"
+        >
+
+          <h3>
+            Project README
+          </h3>
+
+          <p>
+            Repository overview and setup.
+          </p>
+
+        </a>
+
+
+        <a
+          class="card"
+          href="PTM_TMO_Traceability_With_Validation_Report.xlsx"
+        >
+
+          <h3>
+            Traceability report
+          </h3
