@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="theme-color"
+    content="#07111f"
+  >
+
+  <meta
+    name="description"
+    content="Inquiry information for TMO Validation."
+  >
+
+  <title>Inquiries | TMO Validation</title>
+
+  <link rel="stylesheet" href="site.css">
+</head>
+
+<body>
+
+
+<header class="site-header">
+
+  <nav
+    class="nav-inner"
+    aria-label="Main navigation"
+  >
+
+    <a
+      class="brand"
+      href="index.html"
+    >
+      TMO <span>Validation</span>
+    </a>
+
+
+    <button
+      class="menu-button"
+      type="button"
+      aria-expanded="false"
+      aria-controls="navLinks"
+    >
+      Menu
+    </button>
+
+
+    <div
+      class="nav-links"
+      id="navLinks"
+    >
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="index.html#ed">
+        ED
+      </a>
+
+      <a href="index.html#le">
+        LE
+      </a>
+
+      <a href="index.html#ca">
+        CA
+      </a>
+
+      <a href="price.html">
+        Pricing
+      </a>
+
+      <a
+        href="inquiries.html"
+        aria-current="page"
+      >
+        Inquiries
+      </a>
+
+      <a href="privacy.html">
+        Privacy
+      </a>
+
+    </div>
+
+  </nav>
+
+</header>
+
+
+<main>
+
+  <section class="hero">
+
+    <p class="eyebrow">
+      Inquiries
+    </p>
+
+    <h1>
+      Start with<br>
+      the scope.
+    </h1>
+
+    <p class="lead">
+      Use an inquiry to describe the TMO-related work,
+      relevant profile or validation area, expected output,
+      and important project constraints.
+    </p>
+
+  </section>
+
+
+  <section class="section narrow">
+
+    <p class="eyebrow">
+      What to include
+    </p>
+
+    <h2>
+      A useful inquiry
+    </h2>
+
+
+    <div class="grid">
+
+      <article class="card">
+
+        <h3>
+          Objective
+        </h3>
+
+        <p>
+          State the problem or outcome the inquiry
+          is intended to address.
+        </p>
+
+      </article>
+
+
+      <article class="card">
+
+        <h3>
+          TMO area
+        </h3>
+
+        <p>
+          Identify ED, LE, CA, validation,
+          traceability, PTM, or another relevant
+          project area.
+        </p>
+
+      </article>
+
+
+      <article class="card">
+
+        <h3>
+          Deliverable
+        </h3>
+
+        <p>
+          Describe the requested artifact,
+          analysis, implementation, review,
+          or other output.
+        </p>
+
+      </article>
+
+
+      <article class="card">
+
+        <h3>
+          Constraints
+        </h3>
+
+        <p>
+          Include material technical,
+          format, compatibility, or
+          project constraints.
+        </p>
+
+      </article>
+
+    </div>
+
+
+    <div class="notice">
+
+      <strong>Privacy:</strong>
+
+      Do not place confidential, privileged,
+      personal, credentials, secrets, or other
+      sensitive information in a public GitHub issue.
+
+    </div>
+
+
+    <div class="actions">
+
+      <a
+        class="button button-primary"
+        href="https://github.com/jkhcw16-arch/TMO-validation/issues"
+      >
+        GitHub issues
+      </a>
+
+      <a
+        class="button button-secondary"
+        href="price.html"
+      >
+        Pricing
+      </a>
+
+      <a
+        class="button button-secondary"
+        href="privacy.html"
+      >
+        Privacy policy
+      </a>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<footer class="site-footer">
+
+  <div class="site-footer-inner">
+
+    <div class="footer-links">
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="price.html">
+        Pricing
+      </a>
+
+      <a href="inquiries.html">
+        Inquiries
+      </a>
+
+      <a href="privacy.html">
+        Privacy
+      </a>
+
+      <a href="https://github.com/jkhcw16-arch/TMO-validation">
+        GitHub
+      </a>
+
+    </div>
+
+    <p>
+      TMO Validation
+    </p>
+
+  </div>
+
+</footer>
+
+
+<script>
+  const menuButton =
+    document.querySelector(".menu-button");
+
+  const navLinks =
+    document.querySelector("#navLinks");
+
+  menuButton.addEventListener("click", () => {
+
+    const isOpen =
+      menuButton.getAttribute("aria-expanded") === "true";
+
+    menuButton.setAttribute(
+      "aria-expanded",
+      String(!isOpen)
+    );
+
+    navLinks.classList.toggle(
+      "open",
+      !isOpen
+    );
+
+  });
+
+
+  navLinks.addEventListener("click", (event) => {
+
+    if (event.target.closest("a")) {
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+      navLinks.classList.remove("open");
+    }
+
+  });
+</script>
+
+</body>
+</html>
