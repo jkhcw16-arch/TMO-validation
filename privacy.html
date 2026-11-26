@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="theme-color"
+    content="#07111f"
+  >
+
+  <meta
+    name="description"
+    content="Privacy information for the TMO Validation website."
+  >
+
+  <title>Privacy | TMO Validation</title>
+
+  <link rel="stylesheet" href="site.css">
+</head>
+
+<body>
+
+
+<header class="site-header">
+
+  <nav
+    class="nav-inner"
+    aria-label="Main navigation"
+  >
+
+    <a
+      class="brand"
+      href="index.html"
+    >
+      TMO <span>Validation</span>
+    </a>
+
+
+    <button
+      class="menu-button"
+      type="button"
+      aria-expanded="false"
+      aria-controls="navLinks"
+    >
+      Menu
+    </button>
+
+
+    <div
+      class="nav-links"
+      id="navLinks"
+    >
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="index.html#ed">
+        ED
+      </a>
+
+      <a href="index.html#le">
+        LE
+      </a>
+
+      <a href="index.html#ca">
+        CA
+      </a>
+
+      <a href="price.html">
+        Pricing
+      </a>
+
+      <a href="inquiries.html">
+        Inquiries
+      </a>
+
+      <a
+        href="privacy.html"
+        aria-current="page"
+      >
+        Privacy
+      </a>
+
+    </div>
+
+  </nav>
+
+</header>
+
+
+<main>
+
+  <section class="hero narrow">
+
+    <p class="eyebrow">
+      Privacy
+    </p>
+
+    <h1>
+      Privacy<br>
+      information.
+    </h1>
+
+    <p class="lead">
+      This notice describes the privacy posture
+      expressed by the current static TMO Validation
+      website and its public inquiry route.
+    </p>
+
+  </section>
+
+
+  <section class="content-section narrow">
+
+    <h2>
+      Static website
+    </h2>
+
+    <p>
+      The published TMO Validation pages do not
+      themselves provide a TMO user-account system,
+      payment form, or site-hosted inquiry form.
+    </p>
+
+  </section>
+
+
+  <section class="content-section narrow">
+
+    <h2>
+      External services
+    </h2>
+
+    <p>
+      The site links to GitHub and may link to other
+      external resources. Information submitted to an
+      external service is subject to that service's
+      applicable terms and privacy practices.
+    </p>
+
+  </section>
+
+
+  <section class="content-section narrow">
+
+    <h2>
+      Public inquiries
+    </h2>
+
+    <p>
+      The inquiry page can direct visitors to public
+      GitHub Issues. Information posted to a public
+      issue may be publicly visible.
+    </p>
+
+    <p>
+      Do not submit confidential, privileged,
+      personal, credentials, secrets, or other
+      sensitive information through a public issue.
+    </p>
+
+  </section>
+
+
+  <section class="content-section narrow">
+
+    <h2>
+      Future site features
+    </h2>
+
+    <p>
+      If the website later introduces forms,
+      accounts, payments, analytics, or other
+      data-processing functionality, this privacy
+      information should be revised to accurately
+      describe those features.
+    </p>
+
+  </section>
+
+
+  <section class="content-section narrow">
+
+    <h2>
+      Questions
+    </h2>
+
+    <p>
+      For a public project inquiry that does not
+      contain sensitive information, use the
+      <a href="inquiries.html">
+        Inquiries page
+      </a>.
+    </p>
+
+  </section>
+
+</main>
+
+
+<footer class="site-footer">
+
+  <div class="site-footer-inner">
+
+    <div class="footer-links">
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="price.html">
+        Pricing
+      </a>
+
+      <a href="inquiries.html">
+        Inquiries
+      </a>
+
+      <a href="privacy.html">
+        Privacy
+      </a>
+
+      <a href="https://github.com/jkhcw16-arch/TMO-validation">
+        GitHub
+      </a>
+
+    </div>
+
+    <p>
+      TMO Validation
+    </p>
+
+  </div>
+
+</footer>
+
+
+<script>
+  const menuButton =
+    document.querySelector(".menu-button");
+
+  const navLinks =
+    document.querySelector("#navLinks");
+
+  menuButton.addEventListener("click", () => {
+
+    const isOpen =
+      menuButton.getAttribute("aria-expanded") === "true";
+
+    menuButton.setAttribute(
+      "aria-expanded",
+      String(!isOpen)
+    );
+
+    navLinks.classList.toggle(
+      "open",
+      !isOpen
+    );
+
+  });
+
+
+  navLinks.addEventListener("click", (event) => {
+
+    if (event.target.closest("a")) {
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+      navLinks.classList.remove("open");
+    }
+
+  });
+</script>
+
+</body>
+</html>
